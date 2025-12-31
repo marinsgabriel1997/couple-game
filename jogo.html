@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Jogo do Casal</title>
+  <style>
+    /* ============================================
+       DESIGN SYSTEM - TEMA ADULTO ELEGANTE
+    ============================================ */
+    :root {
+      /* Cores base */
+      --bg-primary: #0d0d0d;
+      --bg-secondary: #1a1a1a;
+      --bg-card: #242424;
+      --bg-elevated: #2d2d2d;
+      
+      /* Cores de texto */
+      --text-primary: #f5f5f5;
+      --text-secondary: #a0a0a0;
+      --text-muted: #666;
+      
+      /* Cores de destaque por nível */
+      --accent-moderado: #c9a857;
+      --accent-intenso: #e64a4a;
+      --accent-explicito: #9333ea;
+      
+      /* Cor atual (muda por nível) */
+      --accent: var(--accent-moderado);
+      --accent-glow: var(--accent-moderado);
+      
+      /* Tipos de casa */
+      --casa-acao: #4a90d9;
+      --casa-bonus: #4ade80;
+      --casa-penalidade: #f87171;
+      --casa-escolha: #c084fc;
+      --casa-repeticao: #facc15;
+      --casa-surpresa: #f472b6;
+      --casa-inicio: #6b7280;
+      --casa-final: #fbbf24;
+      
+      /* Sombras e efeitos */
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+      --shadow-glow: 0 0 20px var(--accent);
+      
+      /* Espaçamentos */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      
+      /* Bordas */
+      --radius-sm: 0.5rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+      --radius-full: 50%;
+      
+      /* Transições */
+      --transition-fast: 150ms ease;
+      --transition-normal: 250ms ease;
+      --transition-slow: 400ms ease;
+    }
+
+    /* Tema Moderado */
+    .tema-moderado {
+      --accent: #c9a857;
+      --accent-glow: rgba(201, 168, 87, 0.4);
+    }
+    
+    /* Tema Intenso */
+    .tema-intenso {
+      --accent: #e64a4a;
+      --accent-glow: rgba(230, 74, 74, 0.4);
+    }
+    
+    /* Tema Explícito */
+    .tema-explicito {
+      --accent: #9333ea;
+      --accent-glow: rgba(147, 51, 234, 0.4);
+    }
+
+    /* ============================================
+       RESET E BASE
+    ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100dvh;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* ============================================
+       LAYOUT DE PÁGINAS (WIZARD)
+    ============================================ */
+    .app {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      display: none;
+      flex-direction: column;
+      min-height: 100dvh;
+      padding: var(--space-lg);
+      animation: fadeIn var(--transition-normal);
+    }
+
+    .page.is-active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================
+       COMPONENTES - TIPOGRAFIA
+    ============================================ */
+    .titulo {
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: var(--space-lg);
+      background: linear-gradient(135deg, var(--accent), var(--text-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitulo {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .texto-destaque {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ============================================
+       COMPONENTES - INPUTS
+    ============================================ */
+    .input-grupo {
+      margin-bottom: var(--space-md);
+    }
+
+    .input-label {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .input {
+      width: 100%;
+      padding: var(--space-md);
+      font-size: 1rem;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      border: 2px solid var(--bg-elevated);
+      border-radius: var(--radius-md);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       COMPONENTES - BOTÕES
+    ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-lg);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      border: 2px solid var(--bg-elevated);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      touch-action: manipulation;
+      user-select: none;
+      min-height: 52px;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: transparent;
+      color: var(--text-secondary);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-primary);
+      background: var(--bg-elevated);
+    }
+
+    .btn-danger {
+      background: transparent;
+      border-color: var(--casa-penalidade);
+      color: var(--casa-penalidade);
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .btn-nivel {
+      flex-direction: column;
+      padding: var(--space-lg);
+      text-align: center;
+    }
+
+    .btn-nivel .nivel-nome {
+      font-size: 1.1rem;
+    }
+
+    .btn-nivel .nivel-desc {
+      font-size: 0.8rem;
+      font-weight: 400;
+      opacity: 0.7;
+    }
+
+    .btn-nivel.moderado { border-color: var(--accent-moderado); color: var(--accent-moderado); }
+    .btn-nivel.intenso { border-color: var(--accent-intenso); color: var(--accent-intenso); }
+    .btn-nivel.explicito { border-color: var(--accent-explicito); color: var(--accent-explicito); }
+
+    .btn-nivel.selected {
+      background: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    .btn-nivel.moderado.selected { background: var(--accent-moderado); }
+    .btn-nivel.intenso.selected { background: var(--accent-intenso); }
+    .btn-nivel.explicito.selected { background: var(--accent-explicito); }
+
+    /* ============================================
+       COMPONENTES - DICAS
+    ============================================ */
+    .dicas {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-top: auto;
+      margin-bottom: var(--space-md);
+    }
+
+    .dicas-titulo {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: var(--space-sm);
+    }
+
+    .dicas-lista {
+      list-style: none;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .dicas-lista li {
+      padding: var(--space-xs) 0;
+      padding-left: var(--space-md);
+      position: relative;
+    }
+
+    .dicas-lista li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    /* ============================================
+       COMPONENTES - GRUPO DE BOTÕES
+    ============================================ */
+    .btn-grupo {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .btn-grupo .btn {
+      flex: 1;
+    }
+
+    .btn-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    /* ============================================
+       PÁGINA DO JOGO - LAYOUT
+    ============================================ */
+    .page-jogo {
+      padding: var(--space-sm);
+      padding-bottom: 0;
+      gap: var(--space-xs);
+    }
+
+    /* Cabeçalho do jogo */
+    .jogo-header {
+      text-align: center;
+      padding: var(--space-sm);
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+    }
+
+    .jogo-vez {
+      font-size: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .jogo-vez .nome {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .jogo-placar {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: var(--space-xs);
+    }
+
+    /* ============================================
+       TABULEIRO ESTILO MONOPOLY
+    ============================================ */
+    .tabuleiro-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+      padding: var(--space-xs);
+    }
+
+    .tabuleiro-monopoly {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-template-rows: repeat(7, 1fr);
+      gap: 2px;
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 1;
+      background: var(--bg-secondary);
+      padding: 3px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--accent);
+    }
+
+    .casa {
+      background: var(--bg-card);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 3px;
+      position: relative;
+      font-size: 0.5rem;
+      text-align: center;
+      transition: all var(--transition-fast);
+      overflow: hidden;
+      cursor: default;
+      border: 2px solid transparent;
+    }
+
+    .casa:hover {
+      z-index: 5;
+      transform: scale(1.05);
+    }
+
+    .casa.atual {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      z-index: 10;
+    }
+
+    .casa .casa-numero {
+      position: absolute;
+      top: 1px;
+      left: 2px;
+      font-size: 0.5rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .casa .casa-icone {
+      font-size: 0.6rem;
+      margin: 2px 0 1px;
+      line-height: 1;
+    }
+
+    .casa .casa-texto {
+      font-size: 0.4rem;
+      color: var(--text-secondary);
+      line-height: 1.15;
+      max-height: 3em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      word-break: break-word;
+    }
+
+    /* Cores por tipo de casa */
+    .casa.acao { border-left: 3px solid var(--casa-acao); }
+    .casa.bonus { border-left: 3px solid var(--casa-bonus); }
+    .casa.penalidade { border-left: 3px solid var(--casa-penalidade); }
+    .casa.escolha { border-left: 3px solid var(--casa-escolha); }
+    .casa.repeticao { border-left: 3px solid var(--casa-repeticao); }
+    .casa.surpresa { border-left: 3px solid var(--casa-surpresa); }
+    .casa.inicio { border-left: 3px solid var(--casa-inicio); background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card)); }
+    .casa.final { border-left: 3px solid var(--casa-final); background: linear-gradient(135deg, var(--casa-final), var(--bg-card)); }
+
+    .casa.atual.acao { border-color: var(--casa-acao); box-shadow: 0 0 12px var(--casa-acao); }
+    .casa.atual.bonus { border-color: var(--casa-bonus); box-shadow: 0 0 12px var(--casa-bonus); }
+    .casa.atual.penalidade { border-color: var(--casa-penalidade); box-shadow: 0 0 12px var(--casa-penalidade); }
+    .casa.atual.escolha { border-color: var(--casa-escolha); box-shadow: 0 0 12px var(--casa-escolha); }
+    .casa.atual.repeticao { border-color: var(--casa-repeticao); box-shadow: 0 0 12px var(--casa-repeticao); }
+    .casa.atual.surpresa { border-color: var(--casa-surpresa); box-shadow: 0 0 12px var(--casa-surpresa); }
+
+    /* Peões dos jogadores */
+    .casa .peao {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--text-primary);
+      z-index: 10;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .casa .peao.j1 {
+      background: var(--accent);
+      top: 2px;
+      right: 2px;
+    }
+
+    .casa .peao.j2 {
+      background: var(--text-primary);
+      bottom: 2px;
+      right: 2px;
+    }
+
+    .casa .peao.ativo {
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+      50% { box-shadow: 0 0 0 6px transparent; }
+    }
+
+    /* Centro do tabuleiro - Desafio Atual */
+    .tabuleiro-centro {
+      grid-column: 2 / 7;
+      grid-row: 2 / 7;
+      background: var(--bg-primary);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-md);
+      text-align: center;
+      border: 1px solid var(--bg-elevated);
+    }
+
+    .centro-titulo {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: var(--space-xs);
+    }
+
+    .centro-tipo {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-sm);
+      color: var(--bg-primary);
+      font-weight: 600;
+    }
+
+    .centro-tipo.acao { background: var(--casa-acao); }
+    .centro-tipo.bonus { background: var(--casa-bonus); }
+    .centro-tipo.penalidade { background: var(--casa-penalidade); }
+    .centro-tipo.escolha { background: var(--casa-escolha); }
+    .centro-tipo.repeticao { background: var(--casa-repeticao); }
+    .centro-tipo.surpresa { background: var(--casa-surpresa); }
+
+    .centro-desafio {
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    .centro-efeito {
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-top: var(--space-sm);
+      font-style: italic;
+    }
+
+    .centro-vazio {
+      color: var(--text-muted);
+      font-style: italic;
+      font-size: 0.8rem;
+    }
+
+    /* ============================================
+       CONTROLES DO JOGO
+    ============================================ */
+    .jogo-controles {
+      background: var(--bg-secondary);
+      margin: 0 calc(var(--space-sm) * -1);
+      padding: var(--space-sm);
+      border-top: 1px solid var(--bg-elevated);
+    }
+
+    .dados-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--space-xs);
+      margin-bottom: var(--space-sm);
+    }
+
+    .btn-dado {
+      aspect-ratio: 1;
+      padding: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      min-height: 44px;
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-dado:hover:not(:disabled) {
+      background: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    .btn-dado:disabled {
+      border-color: var(--bg-elevated);
+      color: var(--text-muted);
+    }
+
+    .acoes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xs);
+    }
+
+    .acoes-grid .btn {
+      font-size: 0.75rem;
+      padding: var(--space-sm);
+      min-height: 36px;
+    }
+
+    /* ============================================
+       MODAL DE VITÓRIA
+    ============================================ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-lg);
+      animation: fadeIn var(--transition-normal);
+    }
+
+    .modal-overlay.is-active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      text-align: center;
+      max-width: 320px;
+      width: 100%;
+      border: 2px solid var(--accent);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .modal-icone {
+      font-size: 3rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .modal-titulo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: var(--space-sm);
+      color: var(--accent);
+    }
+
+    .modal-texto {
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* ============================================
+       UTILITÁRIOS
+    ============================================ */
+    .mt-auto { margin-top: auto; }
+    .mb-md { margin-bottom: var(--space-md); }
+    .mb-lg { margin-bottom: var(--space-lg); }
+    .text-center { text-align: center; }
+    .hidden { display: none !important; }
+
+    /* ============================================
+       RESPONSIVO
+    ============================================ */
+    @media (min-width: 480px) {
+      .tabuleiro-monopoly {
+        max-width: 520px;
+      }
+
+      .casa {
+        font-size: 0.55rem;
+      }
+
+      .casa .casa-texto {
+        font-size: 0.5rem;
+      }
+
+      .centro-desafio {
+        font-size: 1rem;
+      }
+
+      .casa-icone {
+        display: none;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .tabuleiro-monopoly {
+        gap: 1px;
+      }
+
+      .casa .casa-texto {
+        display: none;
+      }
+      
+      .casa-icone {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    
+    <!-- ========================================
+         PÁGINA 1 - NOMES
+    ======================================== -->
+    <section class="page is-active" id="paginaNomes">
+      <h1 class="titulo">Jogo do Casal</h1>
+      <p class="subtitulo">Uma noite especial a dois</p>
+
+      <div class="input-grupo">
+        <label class="input-label" for="nome1">Nome do Jogador 1</label>
+        <input type="text" class="input" id="nome1" placeholder="Digite o primeiro nome" maxlength="20" autocomplete="off">
+      </div>
+
+      <div class="input-grupo">
+        <label class="input-label" for="nome2">Nome do Jogador 2</label>
+        <input type="text" class="input" id="nome2" placeholder="Digite o segundo nome" maxlength="20" autocomplete="off">
+      </div>
+
+      <div class="dicas">
+        <p class="dicas-titulo">💡 Como jogar</p>
+        <ul class="dicas-lista">
+          <li>Use um dado físico real para jogar</li>
+          <li>Toque no botão 1-6 conforme o resultado</li>
+          <li>Todos os desafios ficam visíveis no tabuleiro</li>
+          <li>O jogo salva automaticamente</li>
+        </ul>
+      </div>
+
+      <div class="btn-stack mt-auto">
+        <button class="btn btn-primary btn-block" id="btnAvancar" disabled>Avançar</button>
+        <button class="btn btn-outline btn-block hidden" id="btnContinuar">Continuar jogo salvo</button>
+        <button class="btn btn-danger btn-block hidden" id="btnApagar">Apagar salvamento</button>
+      </div>
+    </section>
+
+    <!-- ========================================
+         PÁGINA 2 - NÍVEL
+    ======================================== -->
+    <section class="page" id="paginaNivel">
+      <h1 class="titulo">Escolha o Nível</h1>
+      <p class="subtitulo" id="nomesEscolhidos"></p>
+
+      <div class="btn-stack mb-lg">
+        <button class="btn btn-nivel moderado" data-nivel="moderado">
+          <span class="nivel-nome">🌙 Nível 1 – Moderado</span>
+          <span class="nivel-desc">Romântico e sensual</span>
+        </button>
+        <button class="btn btn-nivel intenso" data-nivel="intenso">
+          <span class="nivel-nome">🔥 Nível 2 – Intenso</span>
+          <span class="nivel-desc">Provocante e ousado</span>
+        </button>
+        <button class="btn btn-nivel explicito" data-nivel="explicito">
+          <span class="nivel-nome">💋 Nível 3 – Explícito</span>
+          <span class="nivel-desc">Sem limites</span>
+        </button>
+      </div>
+
+      <div class="dicas">
+        <p class="dicas-titulo">ℹ️ Sobre os níveis</p>
+        <ul class="dicas-lista">
+          <li><strong>Moderado:</strong> Carícias, beijos e cumplicidade</li>
+          <li><strong>Intenso:</strong> Provocações e toques sensuais</li>
+          <li><strong>Explícito:</strong> Para personalizar como quiser</li>
+        </ul>
+      </div>
+
+      <div class="btn-grupo mt-auto">
+        <button class="btn btn-ghost" id="btnVoltar">Voltar</button>
+        <button class="btn btn-primary" id="btnIniciar" disabled>Iniciar</button>
+      </div>
+    </section>
+
+    <!-- ========================================
+         PÁGINA 3 - JOGO
+    ======================================== -->
+    <section class="page page-jogo" id="paginaJogo">
+      <!-- Cabeçalho -->
+      <div class="jogo-header">
+        <p class="jogo-vez">Vez de: <span class="nome" id="jogadorAtual">-</span></p>
+        <p class="jogo-placar" id="placar">-</p>
+      </div>
+
+      <!-- Tabuleiro Monopoly -->
+      <div class="tabuleiro-container">
+        <div class="tabuleiro-monopoly" id="tabuleiro">
+          <!-- Casas geradas via JS no perímetro -->
+          <!-- Centro com desafio atual -->
+        </div>
+      </div>
+
+      <!-- Controles -->
+      <div class="jogo-controles">
+        <div class="dados-grid" id="dadosGrid">
+          <button class="btn btn-dado" data-valor="1">1</button>
+          <button class="btn btn-dado" data-valor="2">2</button>
+          <button class="btn btn-dado" data-valor="3">3</button>
+          <button class="btn btn-dado" data-valor="4">4</button>
+          <button class="btn btn-dado" data-valor="5">5</button>
+          <button class="btn btn-dado" data-valor="6">6</button>
+        </div>
+        <div class="acoes-grid">
+          <button class="btn btn-ghost" id="btnProximo">Próximo ➜</button>
+          <button class="btn btn-ghost" id="btnPular">Pular</button>
+          <button class="btn btn-ghost" id="btnReiniciar">Reiniciar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================
+         MODAL DE VITÓRIA
+    ======================================== -->
+    <div class="modal-overlay" id="modalVitoria">
+      <div class="modal">
+        <div class="modal-icone">🏆</div>
+        <h2 class="modal-titulo" id="vencedorNome">Parabéns!</h2>
+        <p class="modal-texto">Vocês completaram o jogo! Que tal continuar a diversão?</p>
+        <div class="btn-stack">
+          <button class="btn btn-primary btn-block" id="btnJogarNovamente">Jogar Novamente</button>
+          <button class="btn btn-outline btn-block" id="btnVoltarMenu">Voltar ao Menu</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* ============================================
+       DADOS DO JOGO - ESTRUTURA PRINCIPAL
+    ============================================ */
+    const jogo = {
+      moderado: {
+        tabuleiro: [
+          "inicio", "acao", "bonus", "escolha", "acao", "surpresa",
+          "penalidade", "acao", "repeticao", "bonus", "acao", "escolha",
+          "surpresa", "acao", "penalidade", "acao", "bonus", "acao",
+          "escolha", "final"
+        ],
+        desafios: {
+          acao: [
+            "Olhe nos olhos de {parceiro} por 30 segundos sem desviar",
+            "Dê um beijo suave no pescoço de {parceiro}",
+            "Sussurre algo romântico no ouvido de {parceiro}",
+            "Faça uma massagem relaxante nos ombros de {parceiro} por 1 minuto",
+            "Acaricie o rosto de {parceiro} com delicadeza",
+            "Dê um abraço apertado em {parceiro} por 20 segundos",
+            "Beije a mão de {parceiro} como nos filmes antigos",
+            "Conte uma coisa que você ama em {parceiro}",
+            "Faça um carinho no cabelo de {parceiro}",
+            "Dê um beijo de cinema em {parceiro}",
+            "Deite no colo de {parceiro} por 1 minuto",
+            "Trace desenhos imaginários nas costas de {parceiro}",
+            "Dê beijinhos na testa e nas bochechas de {parceiro}",
+            "Segure as mãos de {parceiro} e olhe nos olhos",
+            "Sussurre por que você escolheu {parceiro}"
+          ],
+          bonus: [
+            "Escolha qualquer desafio para {parceiro} cumprir",
+            "{parceiro} ganha um beijo bônus onde escolher",
+            "Vocês dois ficam 30 segundos abraçados",
+            "Troca de carinhos: cada um faz uma massagem de 30 segundos",
+            "Momento fofo: digam 3 coisas que amam um no outro",
+            "{parceiro} escolhe a trilha sonora do momento"
+          ],
+          penalidade: [
+            "Fique 1 rodada sem poder tocar em {parceiro}",
+            "Conte uma situação embaraçosa sua",
+            "Faça 10 flexões ou imite um animal por 30 segundos",
+            "Deixe {parceiro} escolher seu próximo desafio",
+            "Não pode dar beijos na boca por 2 rodadas",
+            "Perca a próxima jogada observando {parceiro}"
+          ],
+          escolha: [
+            "Escolha: dar uma massagem nos pés OU nas mãos de {parceiro}",
+            "Escolha: cantar uma música romântica OU declamar um poema para {parceiro}",
+            "Escolha: 5 beijinhos rápidos OU 1 beijo longo em {parceiro}",
+            "Escolha: dançar coladinho OU fazer um brinde romântico com {parceiro}",
+            "Escolha: contar um sonho OU revelar uma fantasia leve para {parceiro}",
+            "Escolha: carinho nos pés OU massagem no couro cabeludo de {parceiro}"
+          ],
+          repeticao: [
+            "Repita o último desafio de {parceiro}",
+            "O último desafio que você fez? Faça novamente em {parceiro}!",
+            "Relembre algo carinhoso que já fizeram e repita agora",
+            "Faça a massagem que {parceiro} mais gosta",
+            "Repita o beijo mais gostoso que já deram hoje"
+          ],
+          surpresa: [
+            "Efeito surpresa! Descubra o que acontece...",
+            "A sorte vai decidir! Veja o resultado...",
+            "Momento aleatório! Prepare-se...",
+            "O destino escolhe! Aguarde...",
+            "Carta surpresa revelada!"
+          ]
+        }
+      },
+      intenso: {
+        tabuleiro: [
+          "inicio", "acao", "surpresa", "acao", "bonus", "acao",
+          "escolha", "surpresa", "acao", "penalidade", "acao", "repeticao",
+          "acao", "surpresa", "escolha", "acao", "bonus", "acao",
+          "surpresa", "acao", "penalidade", "acao", "bonus", "final"
+        ],
+        desafios: {
+          acao: [
+            "Morda suavemente o lóbulo da orelha de {parceiro}",
+            "Beije o pescoço de {parceiro} por 30 segundos",
+            "Passe as mãos lentamente pelas costas de {parceiro}",
+            "Sussurre uma fantasia no ouvido de {parceiro}",
+            "Beije a nuca de {parceiro} com suavidade",
+            "Acaricie as pernas de {parceiro} por cima da roupa",
+            "Dê uma mordidinha no ombro de {parceiro}",
+            "Beije de forma provocante o pulso de {parceiro}",
+            "Passe os dedos suavemente pela barriga de {parceiro}",
+            "Olhe para {parceiro} com desejo por 20 segundos",
+            "Tire uma peça de roupa de {parceiro} lentamente",
+            "Faça uma massagem sensual na coxa de {parceiro}",
+            "Beije atrás da orelha de {parceiro}",
+            "Sussurre o que faria se pudessem tudo agora",
+            "Trace o contorno dos lábios de {parceiro} com o dedo",
+            "Deite sobre {parceiro} e olhe nos olhos por 30 segundos",
+            "Acaricie a parte interna do braço de {parceiro}",
+            "Dê um beijo provocante bem devagar em {parceiro}"
+          ],
+          bonus: [
+            "{parceiro} pode pedir qualquer carinho por 1 minuto",
+            "Tirem uma peça de roupa cada um",
+            "Beijos livres por onde {parceiro} quiser por 30 segundos",
+            "Momento de provocação mútua: olhares e toques leves",
+            "{parceiro} escolhe a posição para os próximos 2 minutos",
+            "Vale um pedido ousado para {parceiro} realizar agora"
+          ],
+          penalidade: [
+            "Deixe {parceiro} fazer cócegas em você por 20 segundos",
+            "Confesse algo provocante que nunca contou",
+            "Fique sem beijar por 3 rodadas",
+            "Deixe {parceiro} te provocar por 30 segundos sem poder reagir",
+            "Dance sensualmente sozinho enquanto {parceiro} assiste",
+            "Conte uma fantasia secreta"
+          ],
+          escolha: [
+            "Escolha: tirar sua camisa OU tirar a de {parceiro}",
+            "Escolha: massagem sensual OU dança provocante para {parceiro}",
+            "Escolha: beijos no pescoço OU mordidas leves pelo corpo",
+            "Escolha: sussurrar provocações OU demonstrar com toques",
+            "Escolha: 1 minuto de carinhos onde {parceiro} pedir OU onde você quiser",
+            "Escolha: revelar uma fantasia OU realizar um desejo de {parceiro}"
+          ],
+          repeticao: [
+            "Faça em {parceiro} exatamente o que fizeram em você por último",
+            "Repita o desafio mais ousado que já cumpriu hoje",
+            "Recrie o momento mais provocante do jogo até agora",
+            "O que mais gostou até aqui? Faça de novo!",
+            "Repita em câmera lenta o último toque sensual"
+          ],
+          surpresa: [
+            "Efeito surpresa! O destino decide...",
+            "Algo inesperado está por vir...",
+            "A sorte está lançada!",
+            "Momento de suspense...",
+            "Carta misteriosa revelada!"
+          ]
+        }
+      },
+      explicito: {
+        tabuleiro: [
+          "inicio", "acao", "bonus", "acao", "surpresa", "acao",
+          "escolha", "acao", "penalidade", "acao", "repeticao", "acao",
+          "bonus", "acao", "surpresa", "acao", "escolha", "acao",
+          "penalidade", "acao", "bonus", "acao", "surpresa", "acao",
+          "escolha", "final"
+        ],
+        desafios: {
+          acao: [
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 1]",
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 2]",
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 3]",
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 4]",
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 5]",
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 6]",
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 7]",
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 8]",
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 9]",
+            "[PREENCHA AQUI COM CONTEÚDO EXPLÍCITO 10]"
+          ],
+          bonus: [
+            "[PREENCHA COM BÔNUS EXPLÍCITO 1]",
+            "[PREENCHA COM BÔNUS EXPLÍCITO 2]",
+            "[PREENCHA COM BÔNUS EXPLÍCITO 3]",
+            "[PREENCHA COM BÔNUS EXPLÍCITO 4]"
+          ],
+          penalidade: [
+            "[PREENCHA COM PENALIDADE EXPLÍCITA 1]",
+            "[PREENCHA COM PENALIDADE EXPLÍCITA 2]",
+            "[PREENCHA COM PENALIDADE EXPLÍCITA 3]"
+          ],
+          escolha: [
+            "[PREENCHA COM ESCOLHA EXPLÍCITA 1]",
+            "[PREENCHA COM ESCOLHA EXPLÍCITA 2]",
+            "[PREENCHA COM ESCOLHA EXPLÍCITA 3]",
+            "[PREENCHA COM ESCOLHA EXPLÍCITA 4]"
+          ],
+          repeticao: [
+            "[PREENCHA COM REPETIÇÃO EXPLÍCITA 1]",
+            "[PREENCHA COM REPETIÇÃO EXPLÍCITA 2]",
+            "[PREENCHA COM REPETIÇÃO EXPLÍCITA 3]"
+          ],
+          surpresa: [
+            "[PREENCHA COM SURPRESA EXPLÍCITA 1]",
+            "[PREENCHA COM SURPRESA EXPLÍCITA 2]",
+            "[PREENCHA COM SURPRESA EXPLÍCITA 3]"
+          ]
+        }
+      }
+    };
+
+    // Efeitos possíveis para casas surpresa
+    const efeitosSurpresa = [
+      { texto: "Avance 1 casa!", tipo: "mover", valor: 1 },
+      { texto: "Volte 1 casa!", tipo: "mover", valor: -1 },
+      { texto: "Troque de posição com seu par!", tipo: "trocar", valor: 0 },
+      { texto: "Perde a vez! Aproveite para observar...", tipo: "perder", valor: 0 },
+      { texto: "Sorte! Jogue novamente!", tipo: "extra", valor: 0 }
+    ];
+
+    // Ícones por tipo de casa
+    const iconesCasa = {
+      inicio: '🏁',
+      final: '🏆',
+      acao: '💫',
+      bonus: '🎁',
+      penalidade: '⚠️',
+      escolha: '🔀',
+      repeticao: '🔄',
+      surpresa: '❓'
+    };
+
+    /* ============================================
+       ESTADO DO JOGO
+    ============================================ */
+    const state = {
+      paginaAtual: 'nomes',
+      nome1: '',
+      nome2: '',
+      nivel: null,
+      posicaoJ1: 0,
+      posicaoJ2: 0,
+      jogadorAtual: 1,
+      perdeVezJ1: false,
+      perdeVezJ2: false,
+      travado: false,
+      desafioAtual: null,
+      efeitoAtual: null,
+      casasDesafios: [] // Armazena o desafio fixo de cada casa
+    };
+
+    /* ============================================
+       MÓDULO: STORAGE
+    ============================================ */
+    const Storage = {
+      CHAVE: 'jogoCasal_save',
+
+      salvar() {
+        const dados = {
+          nome1: state.nome1,
+          nome2: state.nome2,
+          nivel: state.nivel,
+          posicaoJ1: state.posicaoJ1,
+          posicaoJ2: state.posicaoJ2,
+          jogadorAtual: state.jogadorAtual,
+          perdeVezJ1: state.perdeVezJ1,
+          perdeVezJ2: state.perdeVezJ2,
+          casasDesafios: state.casasDesafios
+        };
+        localStorage.setItem(this.CHAVE, JSON.stringify(dados));
+      },
+
+      carregar() {
+        const dados = localStorage.getItem(this.CHAVE);
+        return dados ? JSON.parse(dados) : null;
+      },
+
+      existe() {
+        return localStorage.getItem(this.CHAVE) !== null;
+      },
+
+      apagar() {
+        localStorage.removeItem(this.CHAVE);
+      }
+    };
+
+    /* ============================================
+       MÓDULO: UI
+    ============================================ */
+    const UI = {
+      // Elementos da página de nomes
+      inputNome1: document.getElementById('nome1'),
+      inputNome2: document.getElementById('nome2'),
+      btnAvancar: document.getElementById('btnAvancar'),
+      btnContinuar: document.getElementById('btnContinuar'),
+      btnApagar: document.getElementById('btnApagar'),
+
+      // Elementos da página de nível
+      nomesEscolhidos: document.getElementById('nomesEscolhidos'),
+      btnsNivel: document.querySelectorAll('.btn-nivel'),
+      btnVoltar: document.getElementById('btnVoltar'),
+      btnIniciar: document.getElementById('btnIniciar'),
+
+      // Elementos da página do jogo
+      tabuleiro: document.getElementById('tabuleiro'),
+      jogadorAtual: document.getElementById('jogadorAtual'),
+      placar: document.getElementById('placar'),
+      dadosGrid: document.getElementById('dadosGrid'),
+      btnProximo: document.getElementById('btnProximo'),
+      btnPular: document.getElementById('btnPular'),
+      btnReiniciar: document.getElementById('btnReiniciar'),
+
+      // Modal
+      modalVitoria: document.getElementById('modalVitoria'),
+      vencedorNome: document.getElementById('vencedorNome'),
+      btnJogarNovamente: document.getElementById('btnJogarNovamente'),
+      btnVoltarMenu: document.getElementById('btnVoltarMenu'),
+
+      // Páginas
+      paginas: document.querySelectorAll('.page'),
+
+      mostrarPagina(id) {
+        this.paginas.forEach(p => p.classList.remove('is-active'));
+        document.getElementById(id).classList.add('is-active');
+      },
+
+      atualizarBotaoAvancar() {
+        const nome1 = this.inputNome1.value.trim();
+        const nome2 = this.inputNome2.value.trim();
+        this.btnAvancar.disabled = !nome1 || !nome2;
+      },
+
+      mostrarBotoesSave(existe) {
+        this.btnContinuar.classList.toggle('hidden', !existe);
+        this.btnApagar.classList.toggle('hidden', !existe);
+      },
+
+      atualizarNomesNivel() {
+        this.nomesEscolhidos.innerHTML = 
+          `<span class="texto-destaque">${state.nome1}</span> & <span class="texto-destaque">${state.nome2}</span>`;
+      },
+
+      selecionarNivel(nivel) {
+        this.btnsNivel.forEach(btn => {
+          btn.classList.toggle('selected', btn.dataset.nivel === nivel);
+        });
+        this.btnIniciar.disabled = !nivel;
+      },
+
+      aplicarTema(nivel) {
+        document.body.className = `tema-${nivel}`;
+      },
+
+      // Calcula posições no perímetro do grid 7x7 (estilo Monopoly)
+      calcularPosicoesMopolyBoard(numCasas) {
+        const posicoes = [];
+        
+        // Linha superior (esquerda -> direita): row 0, cols 0-6
+        for (let col = 0; col < 7; col++) {
+          posicoes.push({ row: 0, col: col });
+        }
+        // Lateral direita (cima -> baixo): col 6, rows 1-5
+        for (let row = 1; row < 6; row++) {
+          posicoes.push({ row: row, col: 6 });
+        }
+        // Linha inferior (direita -> esquerda): row 6, cols 6-0
+        for (let col = 6; col >= 0; col--) {
+          posicoes.push({ row: 6, col: col });
+        }
+        // Lateral esquerda (baixo -> cima): col 0, rows 5-1
+        for (let row = 5; row >= 1; row--) {
+          posicoes.push({ row: row, col: 0 });
+        }
+        
+        // Total: 7 + 5 + 7 + 5 = 24 posições no perímetro
+        return posicoes.slice(0, numCasas);
+      },
+
+      renderizarTabuleiro() {
+        const numCasas = state.casasDesafios.length;
+        const posicoes = this.calcularPosicoesMopolyBoard(numCasas);
+        
+        // Limpar tabuleiro
+        this.tabuleiro.innerHTML = '';
+        
+        // Criar mapa de posições para facilitar
+        const mapaPosicoes = {};
+        posicoes.forEach((pos, idx) => {
+          const key = `${pos.row}-${pos.col}`;
+          mapaPosicoes[key] = idx;
+        });
+        
+        // Criar grid 7x7
+        for (let row = 0; row < 7; row++) {
+          for (let col = 0; col < 7; col++) {
+            const key = `${row}-${col}`;
+            
+            // Centro do tabuleiro (área 5x5 interna)
+            if (row >= 1 && row <= 5 && col >= 1 && col <= 5) {
+              if (row === 1 && col === 1) {
+                const centro = document.createElement('div');
+                centro.className = 'tabuleiro-centro';
+                centro.id = 'centroDesafio';
+                centro.style.gridColumn = '2 / 7';
+                centro.style.gridRow = '2 / 7';
+                centro.innerHTML = `
+                  <div class="centro-titulo">Desafio Atual</div>
+                  <div class="centro-vazio" id="centroConteudo">Jogue o dado para começar!</div>
+                `;
+                this.tabuleiro.appendChild(centro);
+              }
+              continue;
+            }
+            
+            // Verificar se há casa nesta posição
+            if (mapaPosicoes.hasOwnProperty(key)) {
+              const casaIdx = mapaPosicoes[key];
+              const casaInfo = state.casasDesafios[casaIdx];
+              
+              const casa = document.createElement('div');
+              casa.className = `casa ${casaInfo.tipo}`;
+              casa.dataset.index = casaIdx;
+              casa.style.gridColumn = col + 1;
+              casa.style.gridRow = row + 1;
+              
+              // Destacar casas com jogadores
+              const posJ1 = state.posicaoJ1;
+              const posJ2 = state.posicaoJ2;
+              if (casaIdx === posJ1 || casaIdx === posJ2) {
+                casa.classList.add('atual');
+              }
+              
+              // Conteúdo da casa
+              let textoPreview = casaInfo.desafio;
+              if (textoPreview.length > 50) {
+                textoPreview = textoPreview.substring(0, 47) + '...';
+              }
+              
+              casa.innerHTML = `
+                <span class="casa-numero">${casaIdx}</span>
+                <span class="casa-icone">${iconesCasa[casaInfo.tipo] || '•'}</span>
+                <span class="casa-texto">${textoPreview}</span>
+              `;
+              
+              // Adicionar peões se necessário
+              if (casaIdx === posJ1) {
+                const peao1 = document.createElement('div');
+                peao1.className = `peao j1 ${state.jogadorAtual === 1 ? 'ativo' : ''}`;
+                casa.appendChild(peao1);
+              }
+              if (casaIdx === posJ2) {
+                const peao2 = document.createElement('div');
+                peao2.className = `peao j2 ${state.jogadorAtual === 2 ? 'ativo' : ''}`;
+                casa.appendChild(peao2);
+              }
+              
+              this.tabuleiro.appendChild(casa);
+            }
+          }
+        }
+      },
+
+      atualizarInfoJogo() {
+        const nomeAtual = state.jogadorAtual === 1 ? state.nome1 : state.nome2;
+        const perdeVez = state.jogadorAtual === 1 ? state.perdeVezJ1 : state.perdeVezJ2;
+        
+        this.jogadorAtual.textContent = nomeAtual + (perdeVez ? ' (perde a vez)' : '');
+        this.placar.textContent = `${state.nome1}: Casa ${state.posicaoJ1} | ${state.nome2}: Casa ${state.posicaoJ2}`;
+      },
+
+      mostrarDesafio(tipo, texto, efeito = null) {
+        const centro = document.getElementById('centroConteudo');
+        if (!centro) return;
+        
+        let html = `<span class="centro-tipo ${tipo}">${tipo.toUpperCase()}</span>`;
+        html += `<p class="centro-desafio">${texto}</p>`;
+        if (efeito) {
+          html += `<p class="centro-efeito">✨ ${efeito}</p>`;
+        }
+        centro.innerHTML = html;
+        centro.className = '';
+      },
+
+      limparDesafio() {
+        const centro = document.getElementById('centroConteudo');
+        if (centro) {
+          centro.innerHTML = 'Próximo jogador...';
+          centro.className = 'centro-vazio';
+        }
+      },
+
+      travarDados(travar) {
+        const btns = this.dadosGrid.querySelectorAll('.btn-dado');
+        btns.forEach(btn => btn.disabled = travar);
+      },
+
+      mostrarVitoria(nome) {
+        this.vencedorNome.textContent = `${nome} venceu!`;
+        this.modalVitoria.classList.add('is-active');
+      },
+
+      fecharModal() {
+        this.modalVitoria.classList.remove('is-active');
+      }
+    };
+
+    /* ============================================
+       MÓDULO: GAME
+    ============================================ */
+    const Game = {
+      // Gera desafios fixos para cada casa no início do jogo
+      gerarDesafiosCasas() {
+        const dados = jogo[state.nivel];
+        const tabuleiro = dados.tabuleiro;
+        const desafios = dados.desafios;
+        
+        // Cria cópia dos arrays para embaralhar
+        const copias = {};
+        for (const tipo in desafios) {
+          copias[tipo] = [...desafios[tipo]];
+          // Embaralha
+          for (let i = copias[tipo].length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copias[tipo][i], copias[tipo][j]] = [copias[tipo][j], copias[tipo][i]];
+          }
+        }
+        
+        state.casasDesafios = tabuleiro.map((tipo, idx) => {
+          // Casa de início e final têm textos fixos
+          if (tipo === 'inicio') {
+            return { tipo, desafio: 'Partida! Boa sorte!' };
+          }
+          if (tipo === 'final') {
+            return { tipo, desafio: 'Vitória! Parabéns!' };
+          }
+          
+          if (!copias[tipo] || copias[tipo].length === 0) {
+            copias[tipo] = [...desafios[tipo]];
+          }
+          return {
+            tipo: tipo,
+            desafio: copias[tipo].pop() || 'Aproveite o momento!'
+          };
+        });
+      },
+
+      iniciar() {
+        UI.aplicarTema(state.nivel);
+        UI.renderizarTabuleiro();
+        UI.atualizarInfoJogo();
+        UI.limparDesafio();
+        Storage.salvar();
+      },
+
+      async moverPeao(passos) {
+        if (state.travado) return;
+        
+        const jogador = state.jogadorAtual;
+        const perdeVez = jogador === 1 ? state.perdeVezJ1 : state.perdeVezJ2;
+        
+        // Se perde a vez, apenas passar para próximo
+        if (perdeVez) {
+          if (jogador === 1) state.perdeVezJ1 = false;
+          else state.perdeVezJ2 = false;
+          
+          UI.mostrarDesafio('penalidade', `${jogador === 1 ? state.nome1 : state.nome2} perdeu a vez!`);
+          Storage.salvar();
+          return;
+        }
+
+        state.travado = true;
+        UI.travarDados(true);
+
+        const maxPos = state.casasDesafios.length - 1;
+        let posAtual = jogador === 1 ? state.posicaoJ1 : state.posicaoJ2;
+        
+        // Animação passo a passo
+        for (let i = 0; i < passos; i++) {
+          posAtual = Math.min(posAtual + 1, maxPos);
+          
+          if (jogador === 1) state.posicaoJ1 = posAtual;
+          else state.posicaoJ2 = posAtual;
+          
+          UI.renderizarTabuleiro();
+          await this.delay(180);
+          
+          // Parar se chegou ao final
+          if (posAtual >= maxPos) break;
+        }
+
+        // Verificar vitória
+        if (posAtual >= maxPos) {
+          const nomeVencedor = jogador === 1 ? state.nome1 : state.nome2;
+          UI.mostrarVitoria(nomeVencedor);
+          Storage.apagar();
+          state.travado = false;
+          return;
+        }
+
+        // Processar casa
+        this.processarCasa(posAtual, jogador);
+
+        state.travado = false;
+        Storage.salvar();
+      },
+
+      processarCasa(posicao, jogador) {
+        const casaInfo = state.casasDesafios[posicao];
+        const tipo = casaInfo.tipo;
+        const parceiro = jogador === 1 ? state.nome2 : state.nome1;
+        let efeito = null;
+
+        // Sortear efeito se for surpresa
+        if (tipo === 'surpresa') {
+          efeito = this.sortearEfeito();
+          state.efeitoAtual = efeito;
+        }
+
+        // Substituir placeholder de nome no desafio
+        const desafioTexto = casaInfo.desafio.replace(/{parceiro}/g, parceiro);
+        state.desafioAtual = { tipo, texto: desafioTexto };
+
+        // Aplicar efeito surpresa
+        if (efeito) {
+          this.aplicarEfeito(efeito, jogador);
+          UI.mostrarDesafio(tipo, desafioTexto, efeito.texto);
+        } else {
+          UI.mostrarDesafio(tipo, desafioTexto);
+        }
+
+        UI.travarDados(true);
+      },
+
+      sortearEfeito() {
+        return efeitosSurpresa[Math.floor(Math.random() * efeitosSurpresa.length)];
+      },
+
+      aplicarEfeito(efeito, jogador) {
+        const maxPos = state.casasDesafios.length - 1;
+
+        switch (efeito.tipo) {
+          case 'mover':
+            if (jogador === 1) {
+              state.posicaoJ1 = Math.max(0, Math.min(state.posicaoJ1 + efeito.valor, maxPos));
+            } else {
+              state.posicaoJ2 = Math.max(0, Math.min(state.posicaoJ2 + efeito.valor, maxPos));
+            }
+            UI.renderizarTabuleiro();
+            break;
+
+          case 'trocar':
+            const temp = state.posicaoJ1;
+            state.posicaoJ1 = state.posicaoJ2;
+            state.posicaoJ2 = temp;
+            UI.renderizarTabuleiro();
+            break;
+
+          case 'perder':
+            if (jogador === 1) state.perdeVezJ1 = true;
+            else state.perdeVezJ2 = true;
+            break;
+
+          case 'extra':
+            // Jogador joga novamente - não alterna
+            break;
+        }
+      },
+
+      proximoJogador() {
+        // Só alterna se não tiver efeito "extra"
+        if (!state.efeitoAtual || state.efeitoAtual.tipo !== 'extra') {
+          state.jogadorAtual = state.jogadorAtual === 1 ? 2 : 1;
+        }
+        
+        state.desafioAtual = null;
+        state.efeitoAtual = null;
+        
+        UI.atualizarInfoJogo();
+        UI.renderizarTabuleiro();
+        UI.limparDesafio();
+        UI.travarDados(false);
+        Storage.salvar();
+      },
+
+      pularDesafio() {
+        state.desafioAtual = null;
+        state.efeitoAtual = null;
+        this.proximoJogador();
+      },
+
+      reiniciar() {
+        state.posicaoJ1 = 0;
+        state.posicaoJ2 = 0;
+        state.jogadorAtual = 1;
+        state.perdeVezJ1 = false;
+        state.perdeVezJ2 = false;
+        state.desafioAtual = null;
+        state.efeitoAtual = null;
+        state.travado = false;
+
+        this.gerarDesafiosCasas();
+        UI.renderizarTabuleiro();
+        UI.atualizarInfoJogo();
+        UI.limparDesafio();
+        UI.travarDados(false);
+        Storage.salvar();
+      },
+
+      delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+    };
+
+    /* ============================================
+       INICIALIZAÇÃO E EVENTOS
+    ============================================ */
+    function init() {
+      // Verificar save existente
+      UI.mostrarBotoesSave(Storage.existe());
+
+      // Eventos página de nomes
+      UI.inputNome1.addEventListener('input', () => UI.atualizarBotaoAvancar());
+      UI.inputNome2.addEventListener('input', () => UI.atualizarBotaoAvancar());
+
+      UI.btnAvancar.addEventListener('click', () => {
+        state.nome1 = UI.inputNome1.value.trim();
+        state.nome2 = UI.inputNome2.value.trim();
+        UI.atualizarNomesNivel();
+        UI.mostrarPagina('paginaNivel');
+      });
+
+      UI.btnContinuar.addEventListener('click', () => {
+        const save = Storage.carregar();
+        if (save) {
+          Object.assign(state, save);
+          UI.inputNome1.value = state.nome1;
+          UI.inputNome2.value = state.nome2;
+          UI.aplicarTema(state.nivel);
+          UI.mostrarPagina('paginaJogo');
+          Game.iniciar();
+        }
+      });
+
+      UI.btnApagar.addEventListener('click', () => {
+        if (confirm('Deseja apagar o jogo salvo?')) {
+          Storage.apagar();
+          UI.mostrarBotoesSave(false);
+        }
+      });
+
+      // Eventos página de nível
+      UI.btnsNivel.forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.nivel = btn.dataset.nivel;
+          UI.selecionarNivel(state.nivel);
+        });
+      });
+
+      UI.btnVoltar.addEventListener('click', () => {
+        state.nivel = null;
+        UI.selecionarNivel(null);
+        UI.mostrarPagina('paginaNomes');
+      });
+
+      UI.btnIniciar.addEventListener('click', () => {
+        if (state.nivel) {
+          state.posicaoJ1 = 0;
+          state.posicaoJ2 = 0;
+          state.jogadorAtual = 1;
+          Game.gerarDesafiosCasas();
+          UI.mostrarPagina('paginaJogo');
+          Game.iniciar();
+        }
+      });
+
+      // Eventos página do jogo - Dados
+      UI.dadosGrid.querySelectorAll('.btn-dado').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const valor = parseInt(btn.dataset.valor);
+          Game.moverPeao(valor);
+        });
+      });
+
+      UI.btnProximo.addEventListener('click', () => Game.proximoJogador());
+      UI.btnPular.addEventListener('click', () => Game.pularDesafio());
+      UI.btnReiniciar.addEventListener('click', () => {
+        if (confirm('Deseja reiniciar o jogo?')) {
+          Game.reiniciar();
+        }
+      });
+
+      // Eventos modal
+      UI.btnJogarNovamente.addEventListener('click', () => {
+        UI.fecharModal();
+        Game.reiniciar();
+      });
+
+      UI.btnVoltarMenu.addEventListener('click', () => {
+        UI.fecharModal();
+        Storage.apagar();
+        state.nivel = null;
+        UI.selecionarNivel(null);
+        UI.mostrarPagina('paginaNomes');
+      });
+    }
+
+    // Iniciar aplicação
+    init();
+  </script>
+</body>
+</html>
