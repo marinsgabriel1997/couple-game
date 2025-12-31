@@ -3,14 +3,14 @@
 Jogo de tabuleiro digital para casal, feito em HTML/CSS/JS puro. Roda 100% no navegador, sem dependencias externas, e salva progresso no `localStorage`.
 
 ## Overview do site
-- Experiencia em 3 telas (wizard): nomes -> nivel -> jogo.
-- Tabuleiro estilo Monopoly (perimetro 7x7) com 24 casas e preview dos desafios.
+- Experiencia em 3 telas (wizard): nomes + sexo -> nivel -> jogo.
+- Tabuleiro estilo Monopoly (perimetro 7x7) com 24 casas e preview simples por casa.
 - Dado fisico: o jogador rola fora do app e toca no numero correspondente.
-- Desafio aparece no centro do tabuleiro e efeitos podem alterar a rodada.
+- Desafio aparece no centro do tabuleiro, escolhido por sexo/alvo, e efeitos podem alterar a rodada.
 - Salvamento automatico (retomar jogo ao abrir o site).
 
 ## Como jogar (usuario final)
-1. Preencha os nomes dos jogadores.
+1. Preencha os nomes e selecione o sexo de cada jogador.
 2. Escolha o nivel (moderado, intenso, explicito).
 3. Role um dado fisico e toque no numero 1-6 correspondente.
 4. Leia o desafio no centro do tabuleiro e execute.
@@ -29,16 +29,16 @@ Organizacao em modulos simples:
 
 Fluxo principal:
 1. `init()` registra eventos e verifica save.
-2. `Game.gerarDesafiosCasas()` fixa desafios por casa no inicio.
+2. `Game.gerarDesafiosCasas()` prepara o preview das casas e os pools embaralhados.
 3. `Game.moverPeao()` move passo a passo e chama `processarCasa`.
-4. `Game.processarCasa()` mostra desafio e aplica efeito.
+4. `Game.processarCasa()` sorteia o desafio por alvo/sexo e aplica efeito.
 5. `Game.proximoJogador()` alterna a vez e libera o dado.
 
 ## Tabuleiro e casas
 - O tabuleiro e um grid 7x7.
 - Apenas o perimetro e usado (24 casas).
 - `UI.calcularPosicoesMopolyBoard()` define a ordem do percurso.
-- Cada casa recebe tipo e desafio fixo no inicio da partida:
+- Cada casa recebe tipo fixo e o desafio e sorteado ao cair:
   - `inicio`, `final`, `acao`, `bonus`, `penalidade`, `escolha`, `repeticao`, `surpresa`.
 
 ## Desafios e niveis
@@ -46,7 +46,7 @@ Os desafios ficam no objeto `jogo` no final do `index.html`:
 - `jogo.moderado`, `jogo.intenso`, `jogo.explicito`.
 - Cada nivel possui:
   - `tabuleiro`: sequencia de tipos de casa (24 itens).
-  - `desafios`: listas de textos por tipo.
+  - `desafios`: listas de textos por tipo e alvo.
 
 Para editar desafios:
 1. Abra `index.html`.
@@ -56,10 +56,12 @@ Para editar desafios:
 Regras importantes:
 - `inicio` e `final` usam textos fixos.
 - `surpresa` usa efeitos extras (ver `efeitosSurpresa`).
-- Se uma lista acabar, o jogo recicla os desafios daquele tipo.
+- Seleciona desafios com 60% especificos e 40% genericos, com fallback para `generico`.
+- Se uma lista acabar, o jogo recicla os desafios daquele tipo/alvo.
 
 Placeholders:
-- Use `{parceiro}` no texto para inserir o nome do outro jogador.
+- `{jogador}` e `{parceiro}` inserem os nomes.
+- `{ele_ela_jogador}` e `{ele_ela_parceiro}` inserem "ele/ela" conforme o sexo.
 
 ## Efeitos surpresa
 Definidos em `const efeitosSurpresa`:
@@ -70,8 +72,9 @@ Definidos em `const efeitosSurpresa`:
 
 ## Salvamento
 - Chave do `localStorage`: `jogoCasal_save`.
-- Salva: nomes, nivel, posicoes, vez, flags de perder a vez e desafios das casas.
+- Salva: nomes, sexo, nivel, posicoes, vez, flags de perder a vez, preview das casas e pools.
 - Botao "Continuar" aparece se houver save.
+- Saves antigos sem sexo sao ignorados.
 
 ## Customizacao visual
 Todo o CSS esta no topo do `index.html`.
@@ -84,7 +87,7 @@ Pontos principais:
 Sugestoes comuns e onde mexer:
 - Ajustar layout do tabuleiro: `UI.renderizarTabuleiro()` e CSS `.tabuleiro-monopoly`.
 - Alterar regras de movimento: `Game.moverPeao()` e `Game.aplicarEfeito()`.
-- Mudar textos fixos: `Game.gerarDesafiosCasas()` para `inicio`/`final`.
+- Mudar textos fixos: `Game.sortearDesafio()` para `inicio`/`final`.
 - Adicionar novo tipo de casa:
   - CSS (cor e estilo), `iconesCasa`, `jogo.*.tabuleiro` e `jogo.*.desafios`.
   - Atualizar `UI.mostrarDesafio()` se precisar de estilo dedicado.
