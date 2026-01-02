@@ -1175,35 +1175,45 @@
               { descricao: "Carinho no ombro", desafio: "Faça um carinho no ombro de {parceiro}." },
               { descricao: "Cafuné", desafio: "Faça cafuné em {parceiro}." },
               { descricao: "Respirar juntos", desafio: "Fiquem de mãos dadas e respirem juntos." },
-              { descricao: "Abraço combinado", desafio: "Abrace {parceiro} por trás enquanto {parceiro} segura suas mãos." }
+              { descricao: "Abraço combinado", desafio: "Abrace {parceiro} por trás enquanto {parceiro} segura suas mãos." },
+              { descricao: "Testa com testa", desafio: "Encostem a testa e sorriam por alguns segundos." },
+              { descricao: "Beijo contado", desafio: "Dê três beijos rápidos e um beijo lento em {parceiro}. Ex: conte 1-2-3." }
             ],
             jogador_homem: [
               { descricao: "Toque na nuca", desafio: "{jogador}, segure a nuca de {parceiro} e aproxime o rosto." },
               { descricao: "Elogio romântico", desafio: "{jogador}, faça um elogio romântico olhando nos olhos de {parceiro}." },
               { descricao: "Beijo na bochecha", desafio: "{jogador}, dê um beijo leve na bochecha de {parceiro}." },
               { descricao: "Carinho no cabelo", desafio: "{jogador}, faça um carinho no cabelo de {parceiro}." },
-              { descricao: "Abraço por trás", desafio: "{jogador}, abrace {parceiro} por trás e balance devagar." }
+              { descricao: "Abraço por trás", desafio: "{jogador}, abrace {parceiro} por trás e balance devagar." },
+              { descricao: "Beijo no pulso", desafio: "{jogador}, beije o pulso de {parceiro} e suba devagar." },
+              { descricao: "Cintura guiada", desafio: "{jogador}, puxe {parceiro} pela cintura e encoste o corpo." }
             ],
             jogador_mulher: [
               { descricao: "Nuca e beijo", desafio: "{jogador}, pegue na nuca de {parceiro} e dê um beijo intenso." },
               { descricao: "Carinho no rosto", desafio: "{jogador}, faça um carinho no rosto de {parceiro}." },
               { descricao: "Beijo na testa", desafio: "{jogador}, dê um beijo suave na testa de {parceiro}." },
               { descricao: "Mãos entrelaçadas", desafio: "{jogador}, entrelace as mãos com {parceiro} e encoste a testa." },
-              { descricao: "Elogio carinhoso", desafio: "{jogador}, faça um elogio carinhoso a {parceiro}." }
+              { descricao: "Elogio carinhoso", desafio: "{jogador}, faça um elogio carinhoso a {parceiro}." },
+              { descricao: "Desenho na pele", desafio: "{jogador}, desenhe um coração com o dedo nas costas de {parceiro}." },
+              { descricao: "Beijo no queixo", desafio: "{jogador}, dê um beijo no queixo de {parceiro} e sorria." }
             ],
             parceiro_homem: [
               { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher onde quer um carinho." },
               { descricao: "Massagem rápida", desafio: "Faça uma massagem rápida nos ombros de {parceiro}." },
               { descricao: "Beijo na testa", desafio: "Peça a {parceiro} um beijo suave na sua testa." },
               { descricao: "Abraço colado", desafio: "Convide {parceiro} para um abraço colado." },
-              { descricao: "Abraço guiado", desafio: "Peça a {parceiro} para te abraçar por trás enquanto você segura as mãos de {ele_ela_parceiro}." }
+              { descricao: "Abraço guiado", desafio: "Peça a {parceiro} para te abraçar por trás enquanto você segura as mãos de {ele_ela_parceiro}." },
+              { descricao: "Nuca guiada", desafio: "Peça a {parceiro} para segurar sua nuca e aproximar o rosto." },
+              { descricao: "Beijo na mão", desafio: "Peça a {parceiro} um beijo na sua mão e encoste na bochecha." }
             ],
             parceiro_mulher: [
               { descricao: "Nuca e costas", desafio: "Segure a nuca de {parceiro} enquanto {parceiro} passa as mãos nas suas costas." },
               { descricao: "Olhar profundo", desafio: "Olhe nos olhos de {parceiro} e diga algo que admira em {parceiro}." },
               { descricao: "Beijo delicado", desafio: "Peça a {parceiro} um beijo delicado na sua bochecha." },
               { descricao: "Carinho no rosto", desafio: "Deixe {parceiro} fazer um carinho no seu rosto." },
-              { descricao: "Elogio fofo", desafio: "Peça a {parceiro} para dizer algo fofo e dar um beijo." }
+              { descricao: "Elogio fofo", desafio: "Peça a {parceiro} para dizer algo fofo e dar um beijo." },
+              { descricao: "Beijo no pescoço", desafio: "Peça a {parceiro} um beijo demorado no seu pescoço." },
+              { descricao: "Toque guiado", desafio: "Peça a {parceiro} para guiar sua mão até onde quer um carinho." }
             ]
           },
           bonus: {
@@ -2058,18 +2068,20 @@
         let texto = null;
 
         if (Math.random() < 0.6) {
-          const alvos = this.embaralhar([alvoJogador, alvoParceiro]);
-          for (const alvo of alvos) {
-            texto = this.pegarDoPool(tipo, alvo);
-            if (texto) break;
-          }
+          texto = this.pegarDoPoolPreferindo(tipo, [alvoJogador, alvoParceiro]);
         }
 
         if (!texto) {
           texto = this.pegarDoPool(tipo, 'generico');
+          if (!texto) {
+            texto = this.pegarDoPoolPreferindo(tipo, [alvoJogador, alvoParceiro]);
+          }
         }
 
-        return texto || { descricao: 'Aproveite o momento', desafio: 'Aproveite o momento!' };
+        return texto || {
+          descricao: 'Sem desafios',
+          desafio: 'Sem desafios novos para este tipo. Reinicie o jogo ou adicione mais desafios.'
+        };
       },
 
       prepararPools() {
@@ -2091,6 +2103,18 @@
         return lista;
       },
 
+      poolTemItens(tipo, alvo) {
+        const pool = state.desafiosPools?.[tipo]?.[alvo];
+        return Array.isArray(pool) && pool.length > 0;
+      },
+
+      pegarDoPoolPreferindo(tipo, alvos) {
+        const disponiveis = alvos.filter((alvo) => this.poolTemItens(tipo, alvo));
+        if (disponiveis.length === 0) return null;
+        const alvo = disponiveis[Math.floor(Math.random() * disponiveis.length)];
+        return this.pegarDoPool(tipo, alvo);
+      },
+
       pegarDoPool(tipo, alvo) {
         const base = jogo[state.nivel]?.desafios?.[tipo]?.[alvo];
         if (!base || base.length === 0) return null;
@@ -2100,9 +2124,7 @@
           state.desafiosPools[tipo][alvo] = this.embaralhar([...base]);
         }
 
-        if (state.desafiosPools[tipo][alvo].length === 0) {
-          state.desafiosPools[tipo][alvo] = this.embaralhar([...base]);
-        }
+        if (state.desafiosPools[tipo][alvo].length === 0) return null;
 
         return state.desafiosPools[tipo][alvo].pop();
       },
@@ -2119,18 +2141,20 @@
 
         let texto = null;
         if (Math.random() < 0.6) {
-          const alvos = this.embaralhar([alvoJogador, alvoParceiro]);
-          for (const alvo of alvos) {
-            texto = this.pegarDoPool(tipo, alvo);
-            if (texto) break;
-          }
+          texto = this.pegarDoPoolPreferindo(tipo, [alvoJogador, alvoParceiro]);
         }
 
         if (!texto) {
           texto = this.pegarDoPool(tipo, 'generico');
+          if (!texto) {
+            texto = this.pegarDoPoolPreferindo(tipo, [alvoJogador, alvoParceiro]);
+          }
         }
 
-        return texto || { descricao: 'Aproveite o momento', desafio: 'Aproveite o momento!' };
+        return texto || {
+          descricao: 'Sem desafios',
+          desafio: 'Sem desafios novos para este tipo. Reinicie o jogo ou adicione mais desafios.'
+        };
       },
 
       formatarTexto(texto, jogadorNome, parceiroNome, sexoJogador, sexoParceiro) {

@@ -58,8 +58,8 @@ Para editar desafios:
 
 Regras importantes:
 - `inicio` e `final` usam textos fixos.
-- Seleciona desafios com 60% especificos e 40% genericos, com fallback para `generico`.
-- Se uma lista acabar, o jogo recicla os desafios daquele tipo/alvo.
+- Seleciona desafios com 60% especificos e 40% genericos, com fallback para pools disponiveis.
+- O jogo nao repete desafios na mesma partida; se todos os pools daquele tipo esgotarem, mostra um texto padrao.
 
 Placeholders:
 - `{jogador}` e `{parceiro}` inserem os nomes.
