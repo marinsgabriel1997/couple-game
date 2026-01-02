@@ -5,14 +5,14 @@ Jogo de tabuleiro digital para casal, feito em HTML/CSS/JS puro. Roda 100% no na
 ## Overview do site
 - Experiencia em 3 telas (wizard): nomes + sexo + emoji -> nivel -> jogo.
 - Tabuleiro estilo Monopoly (perimetro 7x7) com 24 casas e preview por casa.
-- Dado fisico: o jogador rola fora do app e toca no numero correspondente.
+- Dado virtual: toque no dado para rolar automaticamente.
 - Desafio aparece no centro do tabuleiro, escolhido por sexo/alvo.
 - Salvamento automatico (retomar jogo ao abrir o site).
 
 ## Como jogar (usuario final)
 1. Preencha os nomes, selecione o sexo e o emoji de cada jogador.
 2. Escolha o nivel (moderado, intenso, explicito).
-3. Role um dado fisico e toque no numero 1-6 correspondente.
+3. Toque no dado para rolar automaticamente (1-6).
 4. Leia o desafio no centro do tabuleiro e execute.
 5. O jogo alterna automaticamente a vez apos o clique no dado, mantendo o desafio visivel.
 

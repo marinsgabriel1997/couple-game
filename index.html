@@ -738,32 +738,47 @@
       width: 100%;
     }
 
-    .dados-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-xs);
+    .dado-wrap {
+      display: flex;
+      justify-content: center;
       margin-bottom: var(--space-sm);
     }
 
     .btn-dado {
+      width: min(150px, 60vw);
       aspect-ratio: 1;
       padding: 0;
-      font-size: 1.25rem;
-      font-weight: 700;
-      min-height: 44px;
-      background: var(--bg-card);
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      background: radial-gradient(circle at 30% 30%, #2f2f2f, var(--bg-card));
       border: 2px solid var(--accent);
+      border-radius: 18px;
       color: var(--accent);
+      box-shadow: var(--shadow-md);
     }
 
     .btn-dado:hover:not(:disabled) {
-      background: var(--accent);
+      background: radial-gradient(circle at 30% 30%, var(--accent), #2f2f2f);
       color: var(--bg-primary);
+      box-shadow: var(--shadow-glow);
     }
 
     .btn-dado:disabled {
       border-color: var(--bg-elevated);
       color: var(--text-muted);
+      box-shadow: none;
+    }
+
+    .btn-dado.rolando {
+      animation: rollShake 320ms ease-in-out infinite;
+    }
+
+    @keyframes rollShake {
+      0% { transform: rotate(0deg) scale(1); }
+      30% { transform: rotate(-6deg) scale(1.02); }
+      60% { transform: rotate(6deg) scale(1.03); }
+      100% { transform: rotate(0deg) scale(1); }
     }
 
     .acoes-grid {
@@ -840,8 +855,9 @@
        RESPONSIVO
     ============================================ */
     @media (min-width: 480px) {
-      .dados-grid {
-        grid-template-columns: repeat(6, 1fr);
+      .btn-dado {
+        width: 160px;
+        font-size: 2.75rem;
       }
 
       .casa {
@@ -970,8 +986,8 @@
             <div class="dicas">
               <p class="dicas-titulo">💡 Como jogar</p>
               <ul class="dicas-lista">
-                <li>Use um dado físico real para jogar</li>
-                <li>Toque no botão 1-6 conforme o resultado</li>
+                <li>Toque no dado para rolar automaticamente</li>
+                <li>O número sorteado move o peão sozinho</li>
                 <li>Todos os desafios ficam visíveis no tabuleiro</li>
                 <li>O jogo salva automaticamente</li>
               </ul>
@@ -1102,13 +1118,8 @@
             <div class="centro-vazio" id="centroConteudo">Jogue o dado para começar!</div>
 
             <div class="jogo-controles">
-              <div class="dados-grid" id="dadosGrid">
-                <button class="btn btn-dado" data-valor="1">1</button>
-                <button class="btn btn-dado" data-valor="2">2</button>
-                <button class="btn btn-dado" data-valor="3">3</button>
-                <button class="btn btn-dado" data-valor="4">4</button>
-                <button class="btn btn-dado" data-valor="5">5</button>
-                <button class="btn btn-dado" data-valor="6">6</button>
+              <div class="dado-wrap">
+                <button class="btn btn-dado" id="btnDado" aria-label="Rolar dado">?</button>
               </div>
               <div class="legenda-casas" aria-label="Legenda das casas">
                 <div class="legenda-item"><span class="legenda-cor inicio"></span>Início</div>
@@ -1733,7 +1744,7 @@
       ultimoJogador: document.getElementById('ultimoJogador'),
       jogadorAtual: document.getElementById('jogadorAtual'),
       placar: document.getElementById('placar'),
-      dadosGrid: document.getElementById('dadosGrid'),
+      btnDado: document.getElementById('btnDado'),
       btnReiniciar: document.getElementById('btnReiniciar'),
 
       // Modal
@@ -1971,8 +1982,21 @@
       },
 
       travarDados(travar) {
-        const btns = this.dadosGrid.querySelectorAll('.btn-dado');
-        btns.forEach(btn => btn.disabled = travar);
+        if (this.btnDado) {
+          this.btnDado.disabled = travar;
+        }
+      },
+
+      definirValorDado(valor) {
+        if (this.btnDado) {
+          this.btnDado.textContent = valor;
+        }
+      },
+
+      animarDado(ativo) {
+        if (this.btnDado) {
+          this.btnDado.classList.toggle('rolando', ativo);
+        }
       },
 
       mostrarVitoria(nome) {
@@ -2415,13 +2439,29 @@
         }
       });
 
-      // Eventos página do jogo - Dados
-      UI.dadosGrid.querySelectorAll('.btn-dado').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const valor = parseInt(btn.dataset.valor);
-          Game.moverPeao(valor);
+      // Eventos página do jogo - Dado unico
+      let dadoRolando = false;
+      if (UI.btnDado) {
+        UI.btnDado.addEventListener('click', () => {
+          if (state.travado || dadoRolando || UI.btnDado.disabled) return;
+          dadoRolando = true;
+          UI.travarDados(true);
+          UI.animarDado(true);
+
+          let valorAtual = 1;
+          const intervalo = setInterval(() => {
+            valorAtual = Math.floor(Math.random() * 6) + 1;
+            UI.definirValorDado(valorAtual);
+          }, 80);
+
+          setTimeout(() => {
+            clearInterval(intervalo);
+            UI.animarDado(false);
+            dadoRolando = false;
+            Game.moverPeao(valorAtual);
+          }, 700);
         });
-      });
+      }
 
       UI.btnReiniciar.addEventListener('click', () => {
         if (confirm('Deseja reiniciar o jogo?')) {
