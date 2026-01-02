@@ -23,7 +23,6 @@
       /* Cores de destaque por nível */
       --accent-moderado: #c9a857;
       --accent-intenso: #e64a4a;
-      --accent-explicito: #9333ea;
       
       /* Cor atual (muda por nível) */
       --accent: var(--accent-moderado);
@@ -75,11 +74,6 @@
       --accent-glow: rgba(230, 74, 74, 0.4);
     }
     
-    /* Tema Explícito */
-    .tema-explicito {
-      --accent: #9333ea;
-      --accent-glow: rgba(147, 51, 234, 0.4);
-    }
 
     /* ============================================
        RESET E BASE
@@ -360,7 +354,6 @@
 
     .btn-nivel.moderado { border-color: var(--accent-moderado); color: var(--accent-moderado); }
     .btn-nivel.intenso { border-color: var(--accent-intenso); color: var(--accent-intenso); }
-    .btn-nivel.explicito { border-color: var(--accent-explicito); color: var(--accent-explicito); }
 
     .btn-nivel.selected {
       background: var(--accent);
@@ -369,7 +362,6 @@
 
     .btn-nivel.moderado.selected { background: var(--accent-moderado); }
     .btn-nivel.intenso.selected { background: var(--accent-intenso); }
-    .btn-nivel.explicito.selected { background: var(--accent-explicito); }
 
     /* ============================================
        COMPONENTES - DICAS
@@ -1059,7 +1051,6 @@
               <ul class="dicas-lista">
                 <li><strong>Moderado:</strong> Carícias, beijos e cumplicidade</li>
                 <li><strong>Intenso:</strong> Provocações e toques sensuais</li>
-                <li><strong>Explícito:</strong> Para personalizar como quiser</li>
               </ul>
             </div>
           </div>
@@ -1074,11 +1065,11 @@
                 <span class="nivel-nome">🔥 Nível 2 – Intenso</span>
                 <span class="nivel-desc">Provocante e ousado</span>
               </button>
-              <button class="btn btn-nivel explicito" data-nivel="explicito">
-                <span class="nivel-nome">💋 Nível 3 – Explícito</span>
-                <span class="nivel-desc">Sem limites</span>
-              </button>
             </div>
+            <p class="subtitulo">
+              Antes de jogar, combinem o que é confortável para vocês (ex.: regiões ok para tocar, tirar peça de roupa, palavras que preferem evitar).
+              Se algo não estiver bom, vale pausar e ajustar.
+            </p>
 
             <div class="btn-grupo">
               <button class="btn btn-ghost" id="btnVoltar">Voltar</button>
@@ -1171,111 +1162,187 @@
           acao: {
             generico: [
               { descricao: "Abraço apertado", desafio: "Dê um abraço demorado em {parceiro}." },
-              { descricao: "Mãos dadas", desafio: "Segure as mãos de {parceiro} e respire junto por 20 segundos." }
+              { descricao: "Mãos dadas", desafio: "Segure as mãos de {parceiro} e respire junto." },
+              { descricao: "Abraço por trás", desafio: "Abrace {parceiro} por trás e mantenha o corpo colado." },
+              { descricao: "Carinho no ombro", desafio: "Faça um carinho no ombro de {parceiro}." },
+              { descricao: "Cafuné", desafio: "Faça cafuné em {parceiro}." },
+              { descricao: "Respirar juntos", desafio: "Fiquem de mãos dadas e respirem juntos." },
+              { descricao: "Abraço combinado", desafio: "Abrace {parceiro} por trás enquanto {parceiro} segura suas mãos." }
             ],
             jogador_homem: [
-              { descricao: "Beijo suave", desafio: "{jogador}, dê um beijo suave na testa de {parceiro}." },
-              { descricao: "Elogio romântico", desafio: "{jogador}, faça um elogio romântico olhando nos olhos de {parceiro}." }
+              { descricao: "Toque na nuca", desafio: "{jogador}, segure a nuca de {parceiro} e aproxime o rosto." },
+              { descricao: "Elogio romântico", desafio: "{jogador}, faça um elogio romântico olhando nos olhos de {parceiro}." },
+              { descricao: "Beijo na bochecha", desafio: "{jogador}, dê um beijo leve na bochecha de {parceiro}." },
+              { descricao: "Carinho no cabelo", desafio: "{jogador}, faça um carinho no cabelo de {parceiro}." },
+              { descricao: "Abraço por trás", desafio: "{jogador}, abrace {parceiro} por trás e balance devagar." }
             ],
             jogador_mulher: [
-              { descricao: "Beijo delicado", desafio: "{jogador}, dê um beijo delicado na bochecha de {parceiro}." },
-              { descricao: "Carinho no rosto", desafio: "{jogador}, faça um carinho no rosto de {parceiro} por 20 segundos." }
+              { descricao: "Nuca e beijo", desafio: "{jogador}, pegue na nuca de {parceiro} e dê um beijo intenso." },
+              { descricao: "Carinho no rosto", desafio: "{jogador}, faça um carinho no rosto de {parceiro}." },
+              { descricao: "Beijo na testa", desafio: "{jogador}, dê um beijo suave na testa de {parceiro}." },
+              { descricao: "Mãos entrelaçadas", desafio: "{jogador}, entrelace as mãos com {parceiro} e encoste a testa." },
+              { descricao: "Elogio carinhoso", desafio: "{jogador}, faça um elogio carinhoso a {parceiro}." }
             ],
             parceiro_homem: [
-              { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher onde {ele_ela_parceiro} quer receber um beijo." },
-              { descricao: "Massagem rápida", desafio: "Faça uma massagem rápida nos ombros de {parceiro}." }
+              { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher onde quer um carinho." },
+              { descricao: "Massagem rápida", desafio: "Faça uma massagem rápida nos ombros de {parceiro}." },
+              { descricao: "Beijo na testa", desafio: "Peça a {parceiro} um beijo suave na sua testa." },
+              { descricao: "Abraço colado", desafio: "Convide {parceiro} para um abraço colado." },
+              { descricao: "Abraço guiado", desafio: "Peça a {parceiro} para te abraçar por trás enquanto você segura as mãos de {ele_ela_parceiro}." }
             ],
             parceiro_mulher: [
-              { descricao: "Beijo na mão", desafio: "Dê um beijo na mão de {parceiro} e elogie {ele_ela_parceiro}." },
-              { descricao: "Olhar profundo", desafio: "Olhe nos olhos de {parceiro} e diga algo que admira em {parceiro}." }
+              { descricao: "Nuca e costas", desafio: "Segure a nuca de {parceiro} enquanto {parceiro} passa as mãos nas suas costas." },
+              { descricao: "Olhar profundo", desafio: "Olhe nos olhos de {parceiro} e diga algo que admira em {parceiro}." },
+              { descricao: "Beijo delicado", desafio: "Peça a {parceiro} um beijo delicado na sua bochecha." },
+              { descricao: "Carinho no rosto", desafio: "Deixe {parceiro} fazer um carinho no seu rosto." },
+              { descricao: "Elogio fofo", desafio: "Peça a {parceiro} para dizer algo fofo e dar um beijo." }
             ]
           },
           bonus: {
             generico: [
-              { descricao: "Abraço apertado", desafio: "Vocês ficam 30 segundos abraçados." },
-              { descricao: "Clima musical", desafio: "{parceiro} escolhe a música do momento." }
+              { descricao: "Abraço apertado", desafio: "Vocês ficam abraçados." },
+              { descricao: "Clima musical", desafio: "{parceiro} escolhe a música do momento." },
+              { descricao: "Abraço combinado", desafio: "Abrace por trás enquanto {parceiro} segura suas mãos." },
+              { descricao: "Momento fofo", desafio: "Troquem um elogio rápido e se abracem." },
+              { descricao: "Carinho extra", desafio: "Façam carinhos leves no rosto." }
             ],
             jogador_homem: [
               { descricao: "Carinho extra", desafio: "{jogador}, peça a {parceiro} um carinho específico." },
-              { descricao: "Momento a dois", desafio: "{jogador}, receba um beijo bônus de {parceiro}." }
+              { descricao: "Momento a dois", desafio: "{jogador}, receba um beijo bônus de {parceiro}." },
+              { descricao: "Abraço guiado", desafio: "{jogador}, peça a {parceiro} um abraço colado enquanto {ele_ela_parceiro} segura sua nuca." },
+              { descricao: "Abraço bônus", desafio: "{jogador}, ganhe um abraço apertado de {parceiro}." },
+              { descricao: "Elogio direto", desafio: "{jogador}, peça um elogio direto de {parceiro}. Ex: peça um elogio sobre a boca ou sobre como {ele_ela_parceiro} toca." }
             ],
             jogador_mulher: [
               { descricao: "Escolha do parceiro", desafio: "{jogador}, escolha um beijo extra para receber." },
-              { descricao: "Massagem rápida", desafio: "{jogador}, ganhe uma massagem rápida de {parceiro}." }
+              { descricao: "Massagem rápida", desafio: "{jogador}, ganhe uma massagem rápida de {parceiro}." },
+              { descricao: "Carinho bônus", desafio: "{jogador}, peça um carinho na mão ou no rosto de {parceiro}." },
+              { descricao: "Abraço por trás", desafio: "{jogador}, receba um abraço por trás e fique de olho fechado." },
+              { descricao: "Momento fofo", desafio: "{jogador}, ganhe um elogio e um abraço de {parceiro}." }
             ],
             parceiro_homem: [
               { descricao: "Momento a dois", desafio: "{parceiro} ganha um beijo extra onde {ele_ela_parceiro} quiser." },
-              { descricao: "Massagem nas mãos", desafio: "Faça uma massagem nas mãos de {parceiro} por 30 segundos." }
+              { descricao: "Massagem nas mãos", desafio: "Faça uma massagem nas mãos de {parceiro}." },
+              { descricao: "Beijo bônus", desafio: "Dê a {parceiro} um beijo extra e um elogio rápido." },
+              { descricao: "Carinho de mimo", desafio: "Faça um carinho nos ombros de {parceiro}." },
+              { descricao: "Momento fofo", desafio: "Deixe {parceiro} receber um abraço apertado e um beijo na testa." }
             ],
             parceiro_mulher: [
               { descricao: "Carinho extra", desafio: "{parceiro} escolhe um carinho para receber agora." },
-              { descricao: "Abraço apertado", desafio: "Dê um abraço longo em {parceiro}." }
+              { descricao: "Abraço apertado", desafio: "Dê um abraço longo em {parceiro}." },
+              { descricao: "Beijo bônus", desafio: "Dê a {parceiro} um beijo extra onde {ele_ela_parceiro} preferir." },
+              { descricao: "Carinho delicado", desafio: "Faça um carinho leve no cabelo de {parceiro}." },
+              { descricao: "Momento fofo", desafio: "Peça a {parceiro} um elogio e retribua com um beijo." }
             ]
           },
           escolha: {
             generico: [
-              { descricao: "Beijo longo", desafio: "Escolha: beijo longo OU cinco beijos rápidos em {parceiro}." },
-              { descricao: "Massagem nas mãos", desafio: "Escolha: massagem nas mãos OU no pescoço de {parceiro}." }
+              { descricao: "Abraço por trás", desafio: "Escolha: abraço por trás OU abraço colado de frente." },
+              { descricao: "Massagem nas mãos", desafio: "Escolha: massagem nas mãos OU no pescoço de {parceiro}." },
+              { descricao: "Carinho suave", desafio: "Escolha: carinho no rosto OU cafuné em {parceiro}." },
+              { descricao: "Abraço ou beijo", desafio: "Escolha: abraço longo OU beijo na testa de {parceiro}." },
+              { descricao: "Olhar ou sussurro", desafio: "Escolha: olhar nos olhos OU sussurrar algo fofo." }
             ],
             jogador_homem: [
               { descricao: "Abraço apertado", desafio: "{jogador}, escolha: abraço longo OU dança lenta com {parceiro}." },
-              { descricao: "Beijo no pescoço", desafio: "{jogador}, escolha: beijo no pescoço OU na testa de {parceiro}." }
+              { descricao: "Beijo no pescoço", desafio: "{jogador}, escolha: beijo no pescoço OU na testa de {parceiro}." },
+              { descricao: "Elogio ou nuca", desafio: "{jogador}, escolha: elogio carinhoso OU segurar a nuca de {parceiro} e beijar." },
+              { descricao: "Carinho ou abraço", desafio: "{jogador}, escolha: carinho no rosto OU abraço." },
+              { descricao: "Mãos dadas", desafio: "{jogador}, escolha: mãos dadas OU beijo na mão de {parceiro}." }
             ],
             jogador_mulher: [
-              { descricao: "Beijo no pescoço", desafio: "{jogador}, escolha: beijo na bochecha OU no pescoço de {parceiro}." },
-              { descricao: "Elogio romântico", desafio: "{jogador}, escolha: elogio romântico OU promessa fofa para {parceiro}." }
+              { descricao: "Nuca ou cafuné", desafio: "{jogador}, escolha: segurar a nuca de {parceiro} e beijar OU cafuné." },
+              { descricao: "Elogio romântico", desafio: "{jogador}, escolha: elogio romântico OU promessa fofa para {parceiro}." },
+              { descricao: "Abraço ou sorriso", desafio: "{jogador}, escolha: abraço apertado OU sorriso cúmplice para {parceiro}." },
+              { descricao: "Carinho ou beijo", desafio: "{jogador}, escolha: carinho no cabelo OU beijo na testa de {parceiro}." },
+              { descricao: "Palavra doce", desafio: "{jogador}, escolha: dizer algo fofo OU dar um beijo na mão de {parceiro}." }
             ],
             parceiro_homem: [
               { descricao: "Abraço apertado", desafio: "Pergunte a {parceiro} se {ele_ela_parceiro} prefere abraço longo OU olhar nos olhos." },
-              { descricao: "Massagem nas mãos", desafio: "Deixe {parceiro} escolher: massagem no ombro OU nas mãos." }
+              { descricao: "Massagem nas mãos", desafio: "Deixe {parceiro} escolher: massagem no ombro OU nas mãos." },
+              { descricao: "Beijo de escolha", desafio: "Deixe {parceiro} escolher: beijo na testa OU na bochecha." },
+              { descricao: "Carinho guiado", desafio: "Peça a {parceiro} para escolher: carinho no rosto OU abraço colado." },
+              { descricao: "Momento fofo", desafio: "Deixe {parceiro} escolher entre sussurrar algo fofo OU dar um beijo demorado." }
             ],
             parceiro_mulher: [
-              { descricao: "Beijo na mão", desafio: "Deixe {parceiro} escolher: beijo na mão OU na bochecha." },
-              { descricao: "Abraço apertado", desafio: "Ofereça a {parceiro} a escolha entre abraço longo OU massagem rápida." }
+              { descricao: "Carinho a escolha", desafio: "Deixe {parceiro} escolher: carinho no cabelo OU no rosto." },
+              { descricao: "Abraço apertado", desafio: "Ofereça a {parceiro} a escolha entre abraço longo OU massagem rápida." },
+              { descricao: "Beijo ou elogio", desafio: "Ofereça a {parceiro} a escolha entre beijo na testa OU elogio fofo." },
+              { descricao: "Mãos dadas", desafio: "Deixe {parceiro} escolher: mãos dadas OU abraço por trás." }
             ]
           },
           repeticao: {
             generico: [
               { descricao: "Carinho extra", desafio: "Repita o último carinho que recebeu de {parceiro}." },
-              { descricao: "Momento a dois", desafio: "Recrie o momento mais fofo até agora." }
+              { descricao: "Momento a dois", desafio: "Recrie o momento mais fofo até agora." },
+              { descricao: "Repetir beijo", desafio: "Repitam o último beijo que gostaram mais." },
+              { descricao: "Carinho de novo", desafio: "Repitam o último carinho no rosto." },
+              { descricao: "Momento favorito", desafio: "Recriem o melhor abraço de hoje." }
             ],
             jogador_homem: [
               { descricao: "Repetir carinho", desafio: "{jogador}, repita o último beijo que deu em {parceiro}." },
-              { descricao: "Elogio romântico", desafio: "{jogador}, faça novamente o último elogio que fez." }
+              { descricao: "Elogio romântico", desafio: "{jogador}, faça novamente o último elogio que fez." },
+              { descricao: "Beijo suave", desafio: "{jogador}, repita o último beijo suave em {parceiro}." },
+              { descricao: "Abraço demorado", desafio: "{jogador}, repita o último abraço demorado." },
+              { descricao: "Carinho no rosto", desafio: "{jogador}, faça novamente o último carinho no rosto de {parceiro}." }
             ],
             jogador_mulher: [
               { descricao: "Abraço apertado", desafio: "{jogador}, repita o último abraço em {parceiro}." },
-              { descricao: "Mãos dadas", desafio: "{jogador}, faça de novo o último carinho nas mãos." }
+              { descricao: "Mãos dadas", desafio: "{jogador}, faça de novo o último carinho nas mãos." },
+              { descricao: "Beijo delicado", desafio: "{jogador}, repita o último beijo delicado em {parceiro}." },
+              { descricao: "Olhar fofo", desafio: "{jogador}, repita o último olhar nos olhos." },
+              { descricao: "Carinho no cabelo", desafio: "{jogador}, faça de novo o último carinho no cabelo de {parceiro}." }
             ],
             parceiro_homem: [
               { descricao: "Carinho extra", desafio: "Repita o último carinho que fez em {parceiro}." },
-              { descricao: "Repetir carinho", desafio: "Deixe {parceiro} pedir para repetir um gesto de hoje." }
+              { descricao: "Repetir carinho", desafio: "Deixe {parceiro} pedir para repetir um gesto de hoje." },
+              { descricao: "Beijo de novo", desafio: "Peça a {parceiro} para repetir o último beijo que deu." },
+              { descricao: "Abraço novamente", desafio: "Deixe {parceiro} repetir o último abraço." },
+              { descricao: "Carinho guiado", desafio: "Peça a {parceiro} para repetir o último carinho que fez em você." }
             ],
             parceiro_mulher: [
               { descricao: "Momento a dois", desafio: "Refaça o último beijo dado em {parceiro}." },
-              { descricao: "Massagem rápida", desafio: "Repita a última massagem que fez em {parceiro}." }
+              { descricao: "Massagem rápida", desafio: "Repita a última massagem que fez em {parceiro}." },
+              { descricao: "Beijo delicado", desafio: "Peça a {parceiro} para repetir um beijo delicado." },
+              { descricao: "Carinho no rosto", desafio: "Deixe {parceiro} repetir o último carinho no seu rosto." },
+              { descricao: "Abraço fofo", desafio: "Peça a {parceiro} para repetir o último abraço fofo." }
             ]
           },
           surpresa: {
             generico: [
               { descricao: "Surpresa carinhosa", desafio: "Surpresa! Troquem um beijo onde cada um escolher." },
-              { descricao: "Mãos dadas", desafio: "Surpresa! Fiquem 20 segundos de olhos fechados, mãos dadas." }
+              { descricao: "Mãos dadas", desafio: "Surpresa! Fiquem de olhos fechados, mãos dadas." },
+              { descricao: "Abraço surpresa", desafio: "Surpresa! Dê um abraço apertado e mantenha o corpo colado." },
+              { descricao: "Elogio surpresa", desafio: "Surpresa! Cada um diz um elogio rápido para o outro." },
+              { descricao: "Carinho surpresa", desafio: "Surpresa! Façam carinhos no rosto." }
             ],
             jogador_homem: [
               { descricao: "Elogio romântico", desafio: "{jogador}, surpresa: faça um elogio específico e dê um beijo em {parceiro}." },
-              { descricao: "Dança lenta", desafio: "{jogador}, surpresa: conduza {parceiro} para uma dança lenta de 20 segundos." }
+              { descricao: "Dança lenta", desafio: "{jogador}, surpresa: conduza {parceiro} para uma dança lenta." },
+              { descricao: "Beijo surpresa", desafio: "{jogador}, surpresa: dê um beijo leve e diga algo fofo." },
+              { descricao: "Carinho surpresa", desafio: "{jogador}, surpresa: faça um carinho no cabelo de {parceiro}." },
+              { descricao: "Abraço surpresa", desafio: "{jogador}, surpresa: abrace {parceiro}." }
             ],
             jogador_mulher: [
               { descricao: "Beijo na testa", desafio: "{jogador}, surpresa: dê um abraço apertado e um beijo na testa de {parceiro}." },
-              { descricao: "Carinho extra", desafio: "{jogador}, surpresa: sussurre algo carinhoso e beije {parceiro}." }
+              { descricao: "Carinho extra", desafio: "{jogador}, surpresa: sussurre algo carinhoso e beije {parceiro}." },
+              { descricao: "Beijo surpresa", desafio: "{jogador}, surpresa: dê um beijo na bochecha e sorria." },
+              { descricao: "Elogio surpresa", desafio: "{jogador}, surpresa: faça um elogio rápido e abrace {parceiro}." },
+              { descricao: "Carinho leve", desafio: "{jogador}, surpresa: faça um carinho no rosto de {parceiro}." }
             ],
             parceiro_homem: [
               { descricao: "Surpresa carinhosa", desafio: "Surpresa: {parceiro} escolhe um beijo extra agora." },
-              { descricao: "Massagem rápida", desafio: "Surpresa: faça uma massagem rápida em {parceiro} e diga por que gosta de {ele_ela_parceiro}." }
+              { descricao: "Massagem rápida", desafio: "Surpresa: faça uma massagem rápida em {parceiro} e diga por que gosta de {ele_ela_parceiro}." },
+              { descricao: "Abraço surpresa", desafio: "Surpresa: deixe {parceiro} te dar um abraço colado." },
+              { descricao: "Beijo surpresa", desafio: "Surpresa: {parceiro} escolhe um beijo para receber agora." },
+              { descricao: "Carinho surpresa", desafio: "Surpresa: deixe {parceiro} fazer um carinho no seu rosto." }
             ],
             parceiro_mulher: [
               { descricao: "Carinho extra", desafio: "Surpresa: {parceiro} escolhe um carinho extra agora." },
-              { descricao: "Surpresa carinhosa", desafio: "Surpresa: olhe para {parceiro} e diga algo que te encanta." }
+              { descricao: "Surpresa carinhosa", desafio: "Surpresa: olhe para {parceiro} e diga algo que te encanta." },
+              { descricao: "Beijo surpresa", desafio: "Surpresa: deixe {parceiro} te dar um beijo onde quiser." },
+              { descricao: "Abraço surpresa", desafio: "Surpresa: peça a {parceiro} um abraço apertado." },
+              { descricao: "Carinho surpresa", desafio: "Surpresa: {parceiro} faz um carinho no seu cabelo." }
             ]
           }
         }
@@ -1290,236 +1357,270 @@
         desafios: {
           acao: {
             generico: [
-              { descricao: "Momento a dois", desafio: "Beije o pescoço de {parceiro} por 10 segundos." },
-              { descricao: "Mãos dadas", desafio: "Passe as mãos lentamente pelas costas de {parceiro}." }
+              { descricao: "Momento a dois", desafio: "Beije o pescoço de {parceiro}." },
+              { descricao: "Mãos dadas", desafio: "Passe as mãos lentamente pelas costas de {parceiro}." },
+              { descricao: "Corpo colado", desafio: "Encostem os corpos e mantenham a pressão." },
+              { descricao: "Contato quente", desafio: "Encostem os corpos e façam toques em área combinada." },
+              { descricao: "Beijo demorado", desafio: "Dê um beijo demorado em {parceiro} e mantenha o corpo colado." },
+              { descricao: "Nuca combinada", desafio: "Segurem a nuca um do outro enquanto se beijam." },
+              { descricao: "Olhar intenso", desafio: "Fiquem bem próximos e mantenham o olhar." },
+              { descricao: "Beijos intimos", desafio: "Beijem o sexo um do outro sem roupa." },
+              { descricao: "Masturbacao mutua", desafio: "Façam masturbacao mutua." },
+              { descricao: "Caricia por cima", desafio: "Caricias na virilha por cima da roupa enquanto se beijam." }
             ],
             jogador_homem: [
               { descricao: "Momento a dois", desafio: "{jogador}, faça uma mordida leve no ombro de {parceiro}." },
-              { descricao: "Provocação", desafio: "{jogador}, sussurre algo provocante no ouvido de {parceiro}." }
+              { descricao: "Provocação", desafio: "{jogador}, sussurre algo provocante no ouvido de {parceiro}. Ex: diga que quer a boca de {parceiro} e a mao de {parceiro} te tocando por baixo da roupa." },
+              { descricao: "Beijo quente", desafio: "{jogador}, dê um beijo intenso em {parceiro}." },
+              { descricao: "Nuca e puxada", desafio: "{jogador}, segure a nuca de {parceiro} e puxe para um beijo intenso." },
+              { descricao: "Sussurro direto", desafio: "{jogador}, sussurre o que quer fazer com {parceiro}. Ex: diga que quer beijo intenso e dedos no sexo." },
+              { descricao: "Beijo intimo", desafio: "{jogador}, dê um beijo no sexo de {parceiro} por cima da roupa." },
+              { descricao: "Sexo oral", desafio: "{jogador}, faça sexo oral em {parceiro}." },
+              { descricao: "Mao direta", desafio: "{jogador}, segure o sexo de {parceiro} sem roupa enquanto beija." }
             ],
             jogador_mulher: [
               { descricao: "Beijo no pescoço", desafio: "{jogador}, dê um beijo provocante no pescoço de {parceiro}." },
-              { descricao: "Toque sensual", desafio: "{jogador}, faça um toque lento nas costas de {parceiro}." }
+              { descricao: "Toque sensual", desafio: "{jogador}, faça um toque lento nas costas de {parceiro}." },
+              { descricao: "Toque na coxa", desafio: "{jogador}, faça carícias na coxa de {parceiro} por cima da roupa." },
+              { descricao: "Nuca e beijo intenso", desafio: "{jogador}, pegue na nuca de {parceiro} e dê um beijo intenso." },
+              { descricao: "Olhar provocante", desafio: "{jogador}, encoste o rosto e diga algo provocante a {parceiro}. Ex: diga que quer beijo intenso e {parceiro} te tocando no sexo." },
+              { descricao: "Beijo intimo", desafio: "{jogador}, dê um beijo no sexo de {parceiro} sem roupa." },
+              { descricao: "Sexo oral", desafio: "{jogador}, faça sexo oral em {parceiro}." },
+              { descricao: "Caricia direta", desafio: "{jogador}, acaricie o sexo de {parceiro} por cima da roupa enquanto beija." }
             ],
             parceiro_homem: [
-              { descricao: "Mãos dadas", desafio: "Deixe {parceiro} guiar suas mãos por 10 segundos." },
-              { descricao: "Momento a dois", desafio: "Dê um beijo demorado em {parceiro} e encoste o corpo." }
+              { descricao: "Mãos dadas", desafio: "Deixe {parceiro} guiar suas mãos." },
+              { descricao: "Momento a dois", desafio: "Dê um beijo demorado em {parceiro} e encoste o corpo." },
+              { descricao: "Beijo guiado", desafio: "Deixe {parceiro} conduzir um beijo mais intenso." },
+              { descricao: "Abraço guiado", desafio: "Peça a {parceiro} para te puxar pela cintura enquanto você encosta o corpo." },
+              { descricao: "Sussurro", desafio: "Peça a {parceiro} para sussurrar algo provocante no seu ouvido. Ex: pedir sexo oral ou um beijo no sexo." },
+              { descricao: "Pedido intimo", desafio: "Peça a {parceiro} um beijo no seu sexo por cima da roupa." },
+              { descricao: "Pedido oral", desafio: "Peça a {parceiro} para fazer sexo oral." },
+              { descricao: "Pedido toque", desafio: "Peça a {parceiro} para te tocar por baixo da roupa." }
             ],
             parceiro_mulher: [
-              { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher onde receber um beijo." },
-              { descricao: "Massagem rápida", desafio: "Faça uma massagem sensual nas coxas de {parceiro} por cima da roupa." }
+              { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher onde receber carícias." },
+              { descricao: "Massagem rápida", desafio: "Faça uma massagem sensual nas coxas de {parceiro} por cima da roupa." },
+              { descricao: "Beijo guiado", desafio: "Deixe {parceiro} guiar um beijo mais demorado." },
+              { descricao: "Aproximação guiada", desafio: "Aproxime o corpo enquanto {parceiro} segura sua nuca e puxa para perto." },
+              { descricao: "Olhar quente", desafio: "Encoste a testa em {parceiro} e diga algo provocante. Ex: diga que quer beijos e a mao de {parceiro} no seu sexo." },
+              { descricao: "Beijo intimo", desafio: "Dê um beijo no sexo de {parceiro} sem roupa." },
+              { descricao: "Sexo oral", desafio: "Faça sexo oral em {parceiro}." },
+              { descricao: "Caricia direta", desafio: "Acaricie o sexo de {parceiro} por cima da roupa enquanto beija." }
             ]
           },
           bonus: {
             generico: [
               { descricao: "Roupa a menos", desafio: "Tirem uma peça de roupa cada um." },
-              { descricao: "Momento a dois", desafio: "Beijos livres por onde {parceiro} quiser por 20 segundos." }
+              { descricao: "Momento a dois", desafio: "Carícias livres por onde {parceiro} quiser." },
+              { descricao: "Peça combinada", desafio: "Tirem uma peça combinada e continuem com toques intensos." },
+              { descricao: "Toque combinado", desafio: "Beijo intenso com toques em área combinada." },
+              { descricao: "Carinho ousado", desafio: "Façam carícias mais intensas. Ex: mãos nas costas e dedos pressionando o sexo por cima da roupa." },
+              { descricao: "Beijo bônus", desafio: "Ganhem um beijo longo com o corpo colado." },
+              { descricao: "Toque bônus", desafio: "Passe as mãos pelas costas de {parceiro} e deslize para o sexo por cima da roupa." },
+              { descricao: "Oral rapido", desafio: "Sexo oral rapido, revezando." },
+              { descricao: "Masturbacao mutua", desafio: "Masturbacao mutua, alternando." },
+              { descricao: "Caricia por baixo", desafio: "Caricias no sexo por baixo da roupa." }
             ],
             jogador_homem: [
-              { descricao: "Toque sensual", desafio: "{jogador}, peça um toque sensual de {parceiro} por 30 segundos." },
-              { descricao: "Beijo longo", desafio: "{jogador}, receba um beijo longo e lento de {parceiro}." }
+              { descricao: "Toque sensual", desafio: "{jogador}, peça um toque sensual de {parceiro}." },
+              { descricao: "Beijo longo", desafio: "{jogador}, receba um beijo longo e lento de {parceiro}." },
+              { descricao: "Carinho dirigido", desafio: "{jogador}, peça a {parceiro} para segurar sua nuca enquanto você encosta o corpo." },
+              { descricao: "Elogio quente", desafio: "{jogador}, peça um elogio mais provocante de {parceiro}. Ex: peça um elogio sobre seu gosto ou sobre como voce faz sexo oral." },
+              { descricao: "Tapinha leve", desafio: "{jogador}, peça a {parceiro} um tapinha leve na raba." },
+              { descricao: "Pedido oral", desafio: "{jogador}, peça a {parceiro} sexo oral." },
+              { descricao: "Masturbacao", desafio: "{jogador}, peça a {parceiro} para te masturbar sem roupa." },
+              { descricao: "Caricia intima", desafio: "{jogador}, peça caricias no seu sexo por cima da roupa." }
             ],
             jogador_mulher: [
-              { descricao: "Carinho extra", desafio: "{jogador}, escolha uma região para receber carinhos por 30 segundos." },
-              { descricao: "Massagem rápida", desafio: "{jogador}, ganhe uma massagem na coxa de {parceiro}." }
+              { descricao: "Carinho extra", desafio: "{jogador}, escolha uma região para receber carinhos." },
+              { descricao: "Massagem rápida", desafio: "{jogador}, ganhe uma massagem na coxa de {parceiro}." },
+              { descricao: "Contato colado", desafio: "{jogador}, receba um abraço colado enquanto {parceiro} segura sua nuca." },
+              { descricao: "Toque direto", desafio: "{jogador}, peça um toque mais direto onde quiser. Ex: coxas ou dedos pressionando o sexo por cima da roupa." },
+              { descricao: "Abraço colado", desafio: "{jogador}, ganhe um abraço colado com beijos leves." },
+              { descricao: "Pedido oral", desafio: "{jogador}, peça a {parceiro} sexo oral." },
+              { descricao: "Masturbacao", desafio: "{jogador}, peça a {parceiro} para te masturbar por cima da roupa." },
+              { descricao: "Caricia intima", desafio: "{jogador}, peça caricias no seu sexo por baixo da roupa." }
             ],
             parceiro_homem: [
               { descricao: "Momento a dois", desafio: "{parceiro} pode pedir um beijo onde {ele_ela_parceiro} quiser." },
-              { descricao: "Carinho extra", desafio: "Dê a {parceiro} 30 segundos de carinhos sem pressa." }
+              { descricao: "Carinho extra", desafio: "Dê a {parceiro} carinhos sem pressa." },
+              { descricao: "Beijo bônus", desafio: "Dê a {parceiro} um beijo intenso e demorado." },
+              { descricao: "Toque bônus", desafio: "Faça carícias mais ousadas nas costas de {parceiro}. Ex: mãos firmes descendo e apertando o sexo por cima da roupa." },
+              { descricao: "Provocação leve", desafio: "Sussurre algo provocante e dê um beijo em {parceiro}. Ex: sussurre que quer {parceiro} te tocando por baixo da roupa." },
+              { descricao: "Beijo intimo", desafio: "Dê a {parceiro} um beijo no sexo por cima da roupa." },
+              { descricao: "Sexo oral", desafio: "Faça sexo oral em {parceiro}." },
+              { descricao: "Caricia intima", desafio: "Acaricie o sexo de {parceiro} sem roupa." }
             ],
             parceiro_mulher: [
               { descricao: "Roupa a menos", desafio: "{parceiro} escolhe a próxima peça de roupa a tirar." },
-              { descricao: "Massagem rápida", desafio: "Faça uma massagem lenta nos ombros de {parceiro}." }
+              { descricao: "Massagem rápida", desafio: "Faça uma massagem lenta nos ombros de {parceiro}." },
+              { descricao: "Beijo bônus", desafio: "Dê a {parceiro} um beijo longo e intenso." },
+              { descricao: "Carinho ousado", desafio: "Faça carícias mais intensas nas costas de {parceiro}. Ex: mãos nas costas e dedos pressionando o sexo por cima da roupa." },
+              { descricao: "Momento quente", desafio: "Deixe {parceiro} receber beijos e carícias." },
+              { descricao: "Beijo intimo", desafio: "Dê a {parceiro} um beijo no sexo sem roupa." },
+              { descricao: "Sexo oral", desafio: "Faça sexo oral em {parceiro}." },
+              { descricao: "Caricia intima", desafio: "Acaricie o sexo de {parceiro} por cima da roupa." }
             ]
           },
           escolha: {
             generico: [
               { descricao: "Beijo no pescoço", desafio: "Escolha: beijo no pescoço OU mordida leve em {parceiro}." },
-              { descricao: "Massagem rápida", desafio: "Escolha: massagem sensual OU dança provocante para {parceiro}." }
+              { descricao: "Massagem rápida", desafio: "Escolha: massagem sensual OU dança provocante para {parceiro}. Ex: dança colada com maos no sexo por cima da roupa." },
+              { descricao: "Beijo ou nuca", desafio: "Escolha: beijo demorado OU segurar a nuca de {parceiro}." },
+              { descricao: "Olhar ou sussurro", desafio: "Escolha: olhar intenso OU sussurrar algo provocante. Ex: sussurrar que quer dedos no sexo." },
+              { descricao: "Carícias ou beijo", desafio: "Escolha: carícias nas costas OU beijo longo em {parceiro}." },
+              { descricao: "Oral ou toque", desafio: "Escolha: sexo oral OU caricias no sexo por cima da roupa." },
+              { descricao: "Masturbacao ou beijo", desafio: "Escolha: masturbacao mutua sem roupa OU beijo intenso." },
+              { descricao: "Beijo intimo", desafio: "Escolha: beijo no sexo sem roupa OU beijo no pescoço." }
             ],
             jogador_homem: [
               { descricao: "Escolha do parceiro", desafio: "{jogador}, escolha: tirar sua camisa OU tirar a de {parceiro}." },
-              { descricao: "Escolha do parceiro", desafio: "{jogador}, escolha: sussurrar provocações OU demonstrar com toques." }
+              { descricao: "Escolha do parceiro", desafio: "{jogador}, escolha: sussurrar provocações OU demonstrar com toques. Ex: sussurrar que quer beijo intenso ou dedos por baixo da roupa." },
+              { descricao: "Beijo ou mordida", desafio: "{jogador}, escolha: beijo intenso OU mordida leve no pescoço de {parceiro}." },
+              { descricao: "Toque ou abraço", desafio: "{jogador}, escolha: toques nas costas OU abraço colado." },
+              { descricao: "Comando ou pedido", desafio: "{jogador}, escolha: dar um comando provocante OU pedir um beijo demorado. Ex: peça um beijo intenso e dedos no seu sexo." },
+              { descricao: "Oral ou masturbacao", desafio: "{jogador}, escolha: sexo oral OU masturbacao mutua." },
+              { descricao: "Intimo ou beijo", desafio: "{jogador}, escolha: beijo no sexo por cima da roupa OU beijo intenso." },
+              { descricao: "Caricia por baixo", desafio: "{jogador}, escolha: caricias no sexo por baixo da roupa OU tapinha leve na raba." }
             ],
             jogador_mulher: [
               { descricao: "Beijo longo", desafio: "{jogador}, escolha: beijo longo OU carícias nas costas de {parceiro}." },
-              { descricao: "Carinho extra", desafio: "{jogador}, escolha: 1 minuto de beijos OU 1 minuto de carinhos." }
+              { descricao: "Carinho extra", desafio: "{jogador}, escolha: beijos OU carinhos." },
+              { descricao: "Toque ou beijo", desafio: "{jogador}, escolha: toques nas costas OU beijo no pescoço de {parceiro}." },
+              { descricao: "Provocação leve", desafio: "{jogador}, escolha: sussurrar algo ousado OU morder de leve o ombro. Ex: sussurrar que quer sua boca no corpo e dedos no sexo." },
+              { descricao: "Ritmo ou calma", desafio: "{jogador}, escolha: beijo rápido e intenso OU beijo lento e profundo." },
+              { descricao: "Oral ou masturbacao", desafio: "{jogador}, escolha: sexo oral OU masturbacao mutua." },
+              { descricao: "Intimo ou beijo", desafio: "{jogador}, escolha: beijo no sexo sem roupa OU beijo intenso." },
+              { descricao: "Caricia por baixo", desafio: "{jogador}, escolha: caricias no sexo por baixo da roupa OU tapinha leve na raba." }
             ],
             parceiro_homem: [
               { descricao: "Momento a dois", desafio: "Pergunte a {parceiro} se {ele_ela_parceiro} prefere beijos OU carícias." },
-              { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher a posição para os próximos 20 segundos." }
+              { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher a posição para o próximo momento." },
+              { descricao: "Beijo escolhido", desafio: "Deixe {parceiro} escolher entre beijo intenso OU carícias nas costas." },
+              { descricao: "Toque escolhido", desafio: "Peça a {parceiro} para escolher: toques lentos OU beijos rápidos." },
+              { descricao: "Ritmo escolhido", desafio: "Deixe {parceiro} escolher o ritmo dos beijos." },
+              { descricao: "Escolha intima", desafio: "Deixe {parceiro} escolher: sexo oral OU masturbacao mutua." },
+              { descricao: "Escolha por baixo", desafio: "Deixe {parceiro} escolher: caricias no sexo por baixo da roupa OU beijo intenso." },
+              { descricao: "Escolha beijo", desafio: "Deixe {parceiro} escolher: beijo no sexo sem roupa OU beijo no pescoço." }
             ],
             parceiro_mulher: [
-              { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher: beijos lentos OU toques provocantes." },
-              { descricao: "Beijo no pescoço", desafio: "Ofereça a {parceiro} a escolha entre abraço colado OU beijos no pescoço." }
+              { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher: beijos lentos OU toques provocantes. Ex: maos nas costas e dedos no sexo por cima da roupa." },
+              { descricao: "Beijo no pescoço", desafio: "Ofereça a {parceiro} a escolha entre abraço colado OU beijos no pescoço." },
+              { descricao: "Toque escolhido", desafio: "Deixe {parceiro} escolher: toques nas costas OU carícias na nuca." },
+              { descricao: "Beijo escolhido", desafio: "Ofereça a {parceiro} a escolha entre beijo intenso OU beijo demorado." },
+              { descricao: "Comando leve", desafio: "Deixe {parceiro} escolher um comando provocante para você cumprir. Ex: {parceiro} pedir um beijo intenso e um toque direto." },
+              { descricao: "Escolha intima", desafio: "Deixe {parceiro} escolher: sexo oral OU masturbacao mutua." },
+              { descricao: "Escolha por baixo", desafio: "Deixe {parceiro} escolher: caricias no sexo por cima da roupa OU beijo intenso." },
+              { descricao: "Escolha beijo", desafio: "Deixe {parceiro} escolher: beijo no sexo por cima da roupa OU beijo no pescoço." }
             ]
           },
           repeticao: {
             generico: [
               { descricao: "Repetir carinho", desafio: "Repita o último toque sensual que recebeu." },
-              { descricao: "Provocação", desafio: "Recrie o momento mais provocante até agora." }
+              { descricao: "Provocação", desafio: "Recrie o momento mais provocante até agora. Ex: repita a caricia no sexo ou o sexo oral que mais gostaram." },
+              { descricao: "Beijo intenso", desafio: "Repitam o último beijo mais intenso." },
+              { descricao: "Toque na nuca", desafio: "Repitam o último toque na nuca." },
+              { descricao: "Olhar quente", desafio: "Repitam o último olhar intenso." },
+              { descricao: "Intimo repetido", desafio: "Repitam a ultima caricia no sexo por baixo da roupa." },
+              { descricao: "Oral repetido", desafio: "Repitam o ultimo sexo oral." },
+              { descricao: "Masturbacao repetida", desafio: "Repitam a ultima masturbacao mutua sem roupa." }
             ],
             jogador_homem: [
               { descricao: "Beijo longo", desafio: "{jogador}, repita o último beijo longo em {parceiro}." },
-              { descricao: "Carinho extra", desafio: "{jogador}, faça de novo o último carinho na coxa de {parceiro}." }
+              { descricao: "Carinho extra", desafio: "{jogador}, faça de novo o último carinho na coxa de {parceiro}." },
+              { descricao: "Toque sensual", desafio: "{jogador}, repita o último toque sensual nas costas de {parceiro}." },
+              { descricao: "Beijo no pescoço", desafio: "{jogador}, repita o último beijo no pescoço de {parceiro}." },
+              { descricao: "Sussurro", desafio: "{jogador}, repita o último sussurro provocante. Ex: repita que quer dedos por baixo da roupa." },
+              { descricao: "Beijo intimo", desafio: "{jogador}, repita o ultimo beijo no sexo de {parceiro} por cima da roupa." },
+              { descricao: "Oral", desafio: "{jogador}, repita o ultimo sexo oral em {parceiro}." },
+              { descricao: "Masturbacao", desafio: "{jogador}, repita a ultima masturbacao em {parceiro} sem roupa." }
             ],
             jogador_mulher: [
               { descricao: "Beijo no pescoço", desafio: "{jogador}, repita o último beijo no pescoço." },
-              { descricao: "Toque sensual", desafio: "{jogador}, faça novamente o último toque lento." }
+              { descricao: "Toque sensual", desafio: "{jogador}, faça novamente o último toque lento." },
+              { descricao: "Beijo intenso", desafio: "{jogador}, repita o último beijo intenso em {parceiro}." },
+              { descricao: "Carinho na nuca", desafio: "{jogador}, repita o último carinho na nuca de {parceiro}." },
+              { descricao: "Olhar provocante", desafio: "{jogador}, repita o último olhar provocante. Ex: olhando bem perto e mordendo o labio." },
+              { descricao: "Beijo intimo", desafio: "{jogador}, repita o ultimo beijo no sexo de {parceiro} sem roupa." },
+              { descricao: "Oral", desafio: "{jogador}, repita o ultimo sexo oral em {parceiro}." },
+              { descricao: "Masturbacao", desafio: "{jogador}, repita a ultima masturbacao em {parceiro} por cima da roupa." }
             ],
             parceiro_homem: [
               { descricao: "Momento a dois", desafio: "Refaça o último beijo dado em {parceiro}." },
-              { descricao: "Repetir carinho", desafio: "Deixe {parceiro} pedir para repetir um toque." }
+              { descricao: "Repetir carinho", desafio: "Deixe {parceiro} pedir para repetir um toque." },
+              { descricao: "Beijo pedido", desafio: "Deixe {parceiro} pedir para repetir um beijo intenso." },
+              { descricao: "Toque pedido", desafio: "Peça a {parceiro} para repetir um toque nas suas costas." },
+              { descricao: "Sussurro pedido", desafio: "Deixe {parceiro} repetir um sussurro provocante. Ex: pedir um beijo intenso e um toque direto." },
+              { descricao: "Intimo pedido", desafio: "Deixe {parceiro} repetir a ultima caricia no sexo por baixo da roupa." },
+              { descricao: "Oral pedido", desafio: "Deixe {parceiro} repetir o ultimo sexo oral." },
+              { descricao: "Masturbacao pedida", desafio: "Peça a {parceiro} para repetir a ultima masturbacao mutua." }
             ],
             parceiro_mulher: [
               { descricao: "Repetir carinho", desafio: "Repita o último gesto sensual com {parceiro}." },
-              { descricao: "Repetir carinho", desafio: "Deixe {parceiro} escolher algo para repetir." }
+              { descricao: "Repetir carinho", desafio: "Deixe {parceiro} escolher algo para repetir." },
+              { descricao: "Beijo repetido", desafio: "Peça a {parceiro} para repetir o último beijo intenso." },
+              { descricao: "Toque repetido", desafio: "Deixe {parceiro} repetir o último toque nas suas costas." },
+              { descricao: "Momento repetido", desafio: "Peça a {parceiro} para repetir o último momento provocante. Ex: beijo intenso com caricias no sexo." },
+              { descricao: "Intimo repetido", desafio: "Peça a {parceiro} para repetir a ultima caricia no sexo por cima da roupa." },
+              { descricao: "Oral repetido", desafio: "Peça a {parceiro} para repetir o ultimo sexo oral." },
+              { descricao: "Masturbacao repetida", desafio: "Peça a {parceiro} para repetir a ultima masturbacao mutua." }
             ]
           },
           surpresa: {
             generico: [
-              { descricao: "Surpresa carinhosa", desafio: "Surpresa! 20 segundos de beijos sem parar." },
-              { descricao: "Surpresa carinhosa", desafio: "Surpresa! Olhares intensos e toque leve por 20 segundos." }
+              { descricao: "Surpresa carinhosa", desafio: "Surpresa! Beijos sem parar." },
+              { descricao: "Surpresa carinhosa", desafio: "Surpresa! Olhares intensos e toque leve." },
+              { descricao: "Surpresa quente", desafio: "Surpresa! Beijo intenso com o corpo colado." },
+              { descricao: "Surpresa provocante", desafio: "Surpresa! Sussurrem algo ousado um para o outro. Ex: sussurrem que querem beijos e dedos no sexo agora." },
+              { descricao: "Surpresa toque", desafio: "Surpresa! Segurem a nuca um do outro e beijem." },
+              { descricao: "Surpresa oral", desafio: "Surpresa! Sexo oral rapido." },
+              { descricao: "Surpresa intima", desafio: "Surpresa! Caricias no sexo por baixo da roupa." },
+              { descricao: "Surpresa masturbacao", desafio: "Surpresa! Masturbacao mutua sem roupa." }
             ],
             jogador_homem: [
               { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: beije {parceiro} lentamente e encoste o corpo." },
-              { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: toque nas costas de {parceiro} e sussurre algo ousado." }
+              { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: toque nas costas de {parceiro} e sussurre algo ousado. Ex: diga que quer um beijo intenso e um toque por baixo da roupa." },
+              { descricao: "Surpresa beijo", desafio: "{jogador}, surpresa: dê um beijo intenso e puxe {parceiro} para perto." },
+              { descricao: "Surpresa provocante", desafio: "{jogador}, surpresa: diga algo provocante no ouvido de {parceiro}. Ex: diga que quer a boca de {parceiro} e a mao {ele_ela_parceiro} no seu sexo." },
+              { descricao: "Surpresa toque", desafio: "{jogador}, surpresa: segure a nuca de {parceiro} enquanto {parceiro} passa as mãos nas suas costas." },
+              { descricao: "Surpresa oral", desafio: "{jogador}, surpresa: faça sexo oral em {parceiro}." },
+              { descricao: "Surpresa intima", desafio: "{jogador}, surpresa: toque o sexo de {parceiro} por baixo da roupa." },
+              { descricao: "Surpresa masturbacao", desafio: "{jogador}, surpresa: masturbe {parceiro} sem roupa." }
             ],
             jogador_mulher: [
-              { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: dê um beijo provocante e um sorriso." },
-              { descricao: "Carinho extra", desafio: "{jogador}, surpresa: faça um carinho lento na nuca de {parceiro}." }
+              { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: dê um beijo provocante e um sorriso. Ex: beijo no pescoço e uma mordida leve." },
+              { descricao: "Carinho extra", desafio: "{jogador}, surpresa: faça um carinho lento na nuca de {parceiro}." },
+              { descricao: "Surpresa beijo", desafio: "{jogador}, surpresa: dê um beijo intenso e encoste o corpo." },
+              { descricao: "Surpresa sussurro", desafio: "{jogador}, surpresa: sussurre algo ousado no ouvido de {parceiro}. Ex: diga que quer beijos e dedos no sexo." },
+              { descricao: "Surpresa toque", desafio: "{jogador}, surpresa: faça um toque lento nas costas de {parceiro}." },
+              { descricao: "Surpresa oral", desafio: "{jogador}, surpresa: faça sexo oral em {parceiro}." },
+              { descricao: "Surpresa intima", desafio: "{jogador}, surpresa: acaricie o sexo de {parceiro} por cima da roupa." },
+              { descricao: "Surpresa masturbacao", desafio: "{jogador}, surpresa: masturbe {parceiro} por cima da roupa." }
             ],
             parceiro_homem: [
               { descricao: "Surpresa carinhosa", desafio: "Surpresa: {parceiro} escolhe um beijo extra agora." },
-              { descricao: "Abraço apertado", desafio: "Surpresa: faça um abraço colado e diga algo que te provoca em {parceiro}." }
+              { descricao: "Abraço apertado", desafio: "Surpresa: faça um abraço colado e diga algo que te provoca em {parceiro}. Ex: diga que quer um beijo intenso e um toque direto." },
+              { descricao: "Surpresa beijo", desafio: "Surpresa: deixe {parceiro} te dar um beijo intenso." },
+              { descricao: "Surpresa toque", desafio: "Surpresa: deixe {parceiro} fazer carícias nas suas costas." },
+              { descricao: "Surpresa sussurro", desafio: "Surpresa: peça a {parceiro} um sussurro provocante. Ex: pedir um beijo intenso e dedos por baixo da roupa." },
+              { descricao: "Surpresa oral", desafio: "Surpresa: peça a {parceiro} sexo oral." },
+              { descricao: "Surpresa intima", desafio: "Surpresa: deixe {parceiro} tocar seu sexo por baixo da roupa." },
+              { descricao: "Surpresa masturbacao", desafio: "Surpresa: peça a {parceiro} uma masturbacao lenta sem roupa." }
             ],
             parceiro_mulher: [
               { descricao: "Carinho extra", desafio: "Surpresa: {parceiro} escolhe onde receber carinhos." },
-              { descricao: "Surpresa carinhosa", desafio: "Surpresa: dê um beijo lento e diga algo que te provoca em {parceiro}." }
+              { descricao: "Surpresa carinhosa", desafio: "Surpresa: dê um beijo lento e diga algo que te provoca em {parceiro}. Ex: diga que quer beijos intensos e caricias no sexo." },
+              { descricao: "Surpresa beijo", desafio: "Surpresa: deixe {parceiro} te dar um beijo intenso." },
+              { descricao: "Surpresa toque", desafio: "Surpresa: deixe {parceiro} fazer carícias nas suas costas." },
+              { descricao: "Surpresa provocante", desafio: "Surpresa: peça a {parceiro} para dizer algo ousado. Ex: pedir caricias no sexo ou sexo oral." },
+              { descricao: "Surpresa oral", desafio: "Surpresa: peça a {parceiro} sexo oral." },
+              { descricao: "Surpresa intima", desafio: "Surpresa: deixe {parceiro} acariciar seu sexo por cima da roupa." },
+              { descricao: "Surpresa masturbacao", desafio: "Surpresa: peça a {parceiro} uma masturbacao lenta por cima da roupa." }
             ]
           }
         }
       },
-      explicito: {
-        tabuleiro: [
-          "inicio", "acao", "bonus", "acao", "surpresa", "acao",
-          "escolha", "acao", "bonus", "acao", "repeticao", "acao",
-          "bonus", "acao", "surpresa", "acao", "escolha", "acao",
-          "bonus", "acao", "bonus", "acao", "surpresa", "final"
-        ],
-        desafios: {
-          acao: {
-            generico: [
-              { descricao: "Mãos dadas", desafio: "Beije {parceiro} com intensidade e mãos pelo corpo." },
-              { descricao: "Momento a dois", desafio: "Faça carícias mais ousadas em {parceiro} por 30 segundos." }
-            ],
-            jogador_homem: [
-              { descricao: "Toque sensual", desafio: "{jogador}, provoque {parceiro} com beijos e toques mais diretos." },
-              { descricao: "Momento a dois", desafio: "{jogador}, sussurre exatamente o que quer fazer com {parceiro}." }
-            ],
-            jogador_mulher: [
-              { descricao: "Momento a dois", desafio: "{jogador}, faça carícias mais ousadas e beije {parceiro} sem pressa." },
-              { descricao: "Toque sensual", desafio: "{jogador}, diga a {parceiro} o que deseja agora e mostre com toques." }
-            ],
-            parceiro_homem: [
-              { descricao: "Momento a dois", desafio: "Deixe {parceiro} guiar sua mão onde {ele_ela_parceiro} quiser por alguns segundos." },
-              { descricao: "Beijo intenso", desafio: "Dê um beijo intenso em {parceiro} e mantenha o corpo colado." }
-            ],
-            parceiro_mulher: [
-              { descricao: "Momento a dois", desafio: "Permita que {parceiro} conduza o ritmo dos beijos por 30 segundos." },
-              { descricao: "Momento a dois", desafio: "Faça carícias mais ousadas em {parceiro} e mantenha contato visual." }
-            ]
-          },
-          bonus: {
-            generico: [
-              { descricao: "Roupa a menos", desafio: "Tirem mais uma peça de roupa cada um." },
-              { descricao: "Momento a dois", desafio: "Beijos e carícias livres por 40 segundos." }
-            ],
-            jogador_homem: [
-              { descricao: "Momento a dois", desafio: "{jogador}, peça uma carícia específica e receba agora." },
-              { descricao: "Toque sensual", desafio: "{jogador}, ganhe 30 segundos de toques onde quiser." }
-            ],
-            jogador_mulher: [
-              { descricao: "Escolha do parceiro", desafio: "{jogador}, escolha um desejo para {parceiro} cumprir agora." },
-              { descricao: "Momento a dois", desafio: "{jogador}, receba beijos e carícias por 30 segundos." }
-            ],
-            parceiro_homem: [
-              { descricao: "Momento a dois", desafio: "{parceiro} escolhe um desejo para você cumprir." },
-              { descricao: "Carinho extra", desafio: "Dê a {parceiro} 30 segundos de carinho intenso." }
-            ],
-            parceiro_mulher: [
-              { descricao: "Momento a dois", desafio: "{parceiro} escolhe onde receber beijos e carícias por 30 segundos." },
-              { descricao: "Massagem rápida", desafio: "Faça uma massagem lenta e provocante em {parceiro}." }
-            ]
-          },
-          escolha: {
-            generico: [
-              { descricao: "Beijo intenso", desafio: "Escolha: beijos intensos OU carícias mais ousadas." },
-              { descricao: "Escolha do parceiro", desafio: "Escolha: tirar uma peça de roupa OU dar 30 segundos de toques." }
-            ],
-            jogador_homem: [
-              { descricao: "Escolha do parceiro", desafio: "{jogador}, escolha: comandar o ritmo dos beijos OU ser guiado por {parceiro}." },
-              { descricao: "Escolha do parceiro", desafio: "{jogador}, escolha: toques mais diretos OU beijos demorados." }
-            ],
-            jogador_mulher: [
-              { descricao: "Escolha do parceiro", desafio: "{jogador}, escolha: conduzir o ritmo OU pedir para {parceiro} conduzir." },
-              { descricao: "Beijo intenso", desafio: "{jogador}, escolha: 30 segundos de carícias OU 30 segundos de beijos intensos." }
-            ],
-            parceiro_homem: [
-              { descricao: "Beijo intenso", desafio: "Deixe {parceiro} escolher: carícias ousadas OU beijos intensos." },
-              { descricao: "Toque sensual", desafio: "Pergunte a {parceiro} se {ele_ela_parceiro} prefere toques OU beijos." }
-            ],
-            parceiro_mulher: [
-              { descricao: "Escolha do parceiro", desafio: "Deixe {parceiro} escolher: beijos lentos OU carícias mais ousadas." },
-              { descricao: "Escolha do parceiro", desafio: "Ofereça a {parceiro} a escolha entre comandar OU deixar {jogador} comandar." }
-            ]
-          },
-          repeticao: {
-            generico: [
-              { descricao: "Repetir carinho", desafio: "Repita o último toque mais ousado." },
-              { descricao: "Momento a dois", desafio: "Recrie o momento mais quente até agora." }
-            ],
-            jogador_homem: [
-              { descricao: "Beijo intenso", desafio: "{jogador}, repita o último beijo intenso em {parceiro}." },
-              { descricao: "Toque sensual", desafio: "{jogador}, faça novamente o último toque direto." }
-            ],
-            jogador_mulher: [
-              { descricao: "Repetir carinho", desafio: "{jogador}, repita a última carícia mais ousada." },
-              { descricao: "Beijo intenso", desafio: "{jogador}, faça de novo o último beijo intenso." }
-            ],
-            parceiro_homem: [
-              { descricao: "Momento a dois", desafio: "Refaça o último beijo profundo em {parceiro}." },
-              { descricao: "Repetir carinho", desafio: "Deixe {parceiro} pedir para repetir um toque específico." }
-            ],
-            parceiro_mulher: [
-              { descricao: "Repetir carinho", desafio: "Repita a última carícia mais ousada em {parceiro}." },
-              { descricao: "Repetir carinho", desafio: "Deixe {parceiro} escolher algo para repetir." }
-            ]
-          },
-          surpresa: {
-            generico: [
-              { descricao: "Surpresa carinhosa", desafio: "Surpresa! 30 segundos de beijos e carícias sem parar." },
-              { descricao: "Surpresa carinhosa", desafio: "Surpresa! Fiquem colados e alternem beijos e toques por 30 segundos." }
-            ],
-            jogador_homem: [
-              { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: beije {parceiro} com intensidade e conduza os toques." },
-              { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: diga um desejo explícito e faça um toque imediato." }
-            ],
-            jogador_mulher: [
-              { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: faça carícias ousadas e um beijo demorado." },
-              { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: diga o que quer e conduza os beijos." }
-            ],
-            parceiro_homem: [
-              { descricao: "Surpresa carinhosa", desafio: "Surpresa: {parceiro} escolhe um desejo para você cumprir agora." },
-              { descricao: "Beijo intenso", desafio: "Surpresa: dê um beijo intenso e deixe {parceiro} guiar suas mãos." }
-            ],
-            parceiro_mulher: [
-              { descricao: "Surpresa carinhosa", desafio: "Surpresa: {parceiro} escolhe onde receber toques por 30 segundos." },
-              { descricao: "Surpresa carinhosa", desafio: "Surpresa: beije {parceiro} intensamente e mantenha contato próximo." }
-            ]
-          }
-        }
-      }
     };
 
     // Efeitos possíveis para casas surpresa
