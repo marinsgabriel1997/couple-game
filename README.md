@@ -11,7 +11,7 @@ Jogo de tabuleiro digital para casal, feito em HTML/CSS/JS puro. Roda 100% no na
 
 ## Como jogar (usuario final)
 1. Preencha os nomes, selecione o sexo e o emoji de cada jogador.
-2. Escolha o nivel (moderado, intenso, explicito).
+2. Escolha o nivel (moderado, intenso).
 3. Toque no dado para rolar automaticamente (1-6).
 4. Leia o desafio no centro do tabuleiro e execute.
 5. O jogo alterna automaticamente a vez apos o clique no dado, mantendo o desafio visivel.
@@ -39,14 +39,14 @@ Fluxo principal:
 - Apenas o perimetro e usado (24 casas).
 - `UI.calcularPosicoesMopolyBoard()` define a ordem do percurso.
 - Cada casa recebe tipo fixo e o desafio e sorteado ao cair:
-  - `inicio`, `final`, `acao`, `bonus`, `escolha`, `repeticao`, `surpresa`.
+  - `inicio`, `final`, `acao`, `escolha`, `surpresa`.
 - Layout das casas:
   - Slots reservados para peao no topo (J1) e rodape (J2).
   - Descricoes curtas no tabuleiro e desafio completo no centro ao cair.
 
 ## Desafios e niveis
 Os desafios ficam no objeto `jogo` no final do `index.html`:
-- `jogo.moderado`, `jogo.intenso`, `jogo.explicito`.
+- `jogo.moderado`, `jogo.intenso`.
 - Cada nivel possui:
   - `tabuleiro`: sequencia de tipos de casa (24 itens).
   - `desafios`: listas de objetos por tipo e alvo.
@@ -78,7 +78,7 @@ Placeholders:
 ## Customizacao visual
 Todo o CSS esta no topo do `index.html`.
 Pontos principais:
-- Tema por nivel: `.tema-moderado`, `.tema-intenso`, `.tema-explicito`.
+- Tema por nivel: `.tema-moderado`, `.tema-intenso`.
 - Variaveis CSS em `:root` controlam cores e espacamento.
 - Tabuleiro responsivo com grid e `aspect-ratio`.
 

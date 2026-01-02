@@ -523,9 +523,7 @@
     }
 
     .legenda-cor.acao { background: var(--casa-acao); }
-    .legenda-cor.bonus { background: var(--casa-bonus); }
     .legenda-cor.escolha { background: var(--casa-escolha); }
-    .legenda-cor.repeticao { background: var(--casa-repeticao); }
     .legenda-cor.surpresa { background: var(--casa-surpresa); }
     .legenda-cor.inicio { background: var(--casa-inicio); }
     .legenda-cor.final { background: var(--casa-final); }
@@ -1126,9 +1124,7 @@
                 <div class="legenda-item"><span class="legenda-cor inicio"></span>Início</div>
                 <div class="legenda-item"><span class="legenda-cor final"></span>Final</div>
                 <div class="legenda-item"><span class="legenda-cor acao"></span>Ação</div>
-                <div class="legenda-item"><span class="legenda-cor bonus"></span>Bônus</div>
                 <div class="legenda-item"><span class="legenda-cor escolha"></span>Escolha</div>
-                <div class="legenda-item"><span class="legenda-cor repeticao"></span>Repetição</div>
                 <div class="legenda-item"><span class="legenda-cor surpresa"></span>Surpresa</div>
                 <div class="legenda-nota">Texto do desafio usa a cor do gênero.</div>
               </div>
@@ -1165,10 +1161,10 @@
     const jogo = {
       moderado: {
         tabuleiro: [
-          "inicio", "acao", "bonus", "escolha", "acao", "surpresa",
-          "bonus", "acao", "bonus", "acao", "repeticao", "bonus",
-          "acao", "escolha", "surpresa", "acao", "bonus", "acao",
-          "bonus", "acao", "escolha", "bonus", "acao", "final"
+          "inicio", "acao", "acao", "escolha", "acao", "surpresa",
+          "acao", "acao", "acao", "acao", "acao", "acao",
+          "acao", "escolha", "surpresa", "acao", "acao", "acao",
+          "acao", "acao", "escolha", "acao", "acao", "final"
         ],
         desafios: {
           acao: {
@@ -1253,7 +1249,11 @@
               { descricao: "Massagem nas mãos", desafio: "Escolha: massagem nas mãos OU no pescoço de {parceiro}." },
               { descricao: "Carinho suave", desafio: "Escolha: carinho no rosto OU cafuné em {parceiro}." },
               { descricao: "Abraço ou beijo", desafio: "Escolha: abraço longo OU beijo na testa de {parceiro}." },
-              { descricao: "Olhar ou sussurro", desafio: "Escolha: olhar nos olhos OU sussurrar algo fofo." }
+              { descricao: "Olhar ou sussurro", desafio: "Escolha: olhar nos olhos OU sussurrar algo fofo." },
+              { descricao: "Ritual rapido", desafio: "Escolha: beijo lento OU abraco apertado. Ex: 10s de beijo com olhos fechados." },
+              { descricao: "Toque guiado", desafio: "Escolha: cafune OU carinho na nuca. Ex: movimentos circulares por 20s." },
+              { descricao: "Sorriso e olho", desafio: "Escolha: olhar nos olhos OU dizer algo fofo. Ex: diga o que mais gosta em {parceiro}." },
+              { descricao: "Beijo leve", desafio: "Escolha: beijo na testa OU beijo na mao. Ex: beije a mao e encoste na bochecha." }
             ],
             jogador_homem: [
               { descricao: "Abraço apertado", desafio: "{jogador}, escolha: abraço longo OU dança lenta com {parceiro}." },
@@ -1326,7 +1326,11 @@
               { descricao: "Mãos dadas", desafio: "Surpresa! Fiquem de olhos fechados, mãos dadas." },
               { descricao: "Abraço surpresa", desafio: "Surpresa! Dê um abraço apertado e mantenha o corpo colado." },
               { descricao: "Elogio surpresa", desafio: "Surpresa! Cada um diz um elogio rápido para o outro." },
-              { descricao: "Carinho surpresa", desafio: "Surpresa! Façam carinhos no rosto." }
+              { descricao: "Carinho surpresa", desafio: "Surpresa! Façam carinhos no rosto." },
+              { descricao: "Surpresa dupla", desafio: "Surpresa! Tres beijos rapidos em lugares diferentes. Ex: bochecha, testa, mao." },
+              { descricao: "Surpresa respiro", desafio: "Surpresa! Segurem as maos e respirem juntos. Ex: 5 respiracoes lentas." },
+              { descricao: "Surpresa elogio", desafio: "Surpresa! Cada um diz algo que admira no outro. Ex: \"gosto do seu sorriso\"." },
+              { descricao: "Surpresa abraco", desafio: "Surpresa! Abraco por tras e beijo no pescoco. Ex: 5s de abraco colado." }
             ],
             jogador_homem: [
               { descricao: "Elogio romântico", desafio: "{jogador}, surpresa: faça um elogio específico e dê um beijo em {parceiro}." },
@@ -1361,10 +1365,10 @@
       },
       intenso: {
         tabuleiro: [
-          "inicio", "acao", "surpresa", "acao", "bonus", "acao",
-          "escolha", "surpresa", "acao", "bonus", "acao", "repeticao",
-          "acao", "surpresa", "escolha", "acao", "bonus", "acao",
-          "surpresa", "acao", "bonus", "acao", "bonus", "final"
+          "inicio", "acao", "surpresa", "acao", "acao", "acao",
+          "escolha", "surpresa", "acao", "acao", "acao", "acao",
+          "acao", "surpresa", "escolha", "acao", "acao", "acao",
+          "surpresa", "acao", "acao", "acao", "acao", "final"
         ],
         desafios: {
           acao: {
@@ -1484,7 +1488,11 @@
               { descricao: "Carícias ou beijo", desafio: "Escolha: carícias nas costas OU beijo longo em {parceiro}." },
               { descricao: "Oral ou toque", desafio: "Escolha: sexo oral OU caricias no sexo por cima da roupa." },
               { descricao: "Masturbacao ou beijo", desafio: "Escolha: masturbacao mutua sem roupa OU beijo intenso." },
-              { descricao: "Beijo intimo", desafio: "Escolha: beijo no sexo sem roupa OU beijo no pescoço." }
+              { descricao: "Beijo intimo", desafio: "Escolha: beijo no sexo sem roupa OU beijo no pescoço." },
+              { descricao: "Ombro ou nuca", desafio: "Escolha: mordida leve no ombro OU beijo lento na nuca. Ex: segure a nuca e aproxime." },
+              { descricao: "Coxa ou pescoco", desafio: "Escolha: toque na coxa por cima da roupa OU beijo no pescoco. Ex: caricia por 20s." },
+              { descricao: "Sussurro ou toque", desafio: "Escolha: sussurrar algo ousado OU toque lento nas costas. Ex: diga onde quer ser tocado." },
+              { descricao: "Pressao ou carinho", desafio: "Escolha: abraco colado com pressao OU caricias nas costas. Ex: maos subindo e descendo." }
             ],
             jogador_homem: [
               { descricao: "Escolha do parceiro", desafio: "{jogador}, escolha: tirar sua camisa OU tirar a de {parceiro}." },
@@ -1588,7 +1596,11 @@
               { descricao: "Surpresa toque", desafio: "Surpresa! Segurem a nuca um do outro e beijem." },
               { descricao: "Surpresa oral", desafio: "Surpresa! Sexo oral rapido." },
               { descricao: "Surpresa intima", desafio: "Surpresa! Caricias no sexo por baixo da roupa." },
-              { descricao: "Surpresa masturbacao", desafio: "Surpresa! Masturbacao mutua sem roupa." }
+              { descricao: "Surpresa masturbacao", desafio: "Surpresa! Masturbacao mutua sem roupa." },
+              { descricao: "Surpresa nuca", desafio: "Surpresa! Beijo longo com maos na nuca. Ex: 15s de beijo." },
+              { descricao: "Surpresa toque", desafio: "Surpresa! Toques provocantes por cima da roupa. Ex: 20s de caricia." },
+              { descricao: "Surpresa corpo", desafio: "Surpresa! Encostem o corpo e sussurrem algo ousado. Ex: diga onde quer ser tocado." },
+              { descricao: "Surpresa coxa", desafio: "Surpresa! Caricia na coxa + beijo no pescoco. Ex: alternar toque e beijo." }
             ],
             jogador_homem: [
               { descricao: "Surpresa carinhosa", desafio: "{jogador}, surpresa: beije {parceiro} lentamente e encoste o corpo." },
