@@ -915,6 +915,53 @@
         display: none;
       }
     }
+
+    @media (max-width: 520px) {
+      .tabuleiro-monopoly {
+        padding: 1px;
+        gap: 1px;
+      }
+
+      .tabuleiro-overlay {
+        padding: var(--space-sm);
+      }
+
+      .tabuleiro-centro {
+        width: calc(100% * 4 / 7);
+        height: calc(100% * 4 / 7);
+      }
+
+      .casa {
+        padding: 1px;
+      }
+
+      .casa.acao,
+      .casa.bonus,
+      .casa.escolha,
+      .casa.repeticao,
+      .casa.surpresa,
+      .casa.inicio,
+      .casa.final {
+        border-width: 2px;
+      }
+
+      .casa-conteudo {
+        gap: 3px;
+      }
+
+      .casa-slot {
+        min-height: 14px;
+      }
+
+      .casa-peao-slot {
+        font-size: 0.45rem;
+        max-width: 60px;
+      }
+
+      .casa-desafio {
+        font-size: 0.5rem;
+      }
+    }
   </style>
 </head>
 <body>
