@@ -3,18 +3,18 @@
 Jogo de tabuleiro digital para casal, feito em HTML/CSS/JS puro. Roda 100% no navegador, sem dependencias externas, e salva progresso no `localStorage`.
 
 ## Overview do site
-- Experiencia em 3 telas (wizard): nomes + sexo -> nivel -> jogo.
+- Experiencia em 3 telas (wizard): nomes + sexo + emoji -> nivel -> jogo.
 - Tabuleiro estilo Monopoly (perimetro 7x7) com 24 casas e preview simples por casa.
 - Dado fisico: o jogador rola fora do app e toca no numero correspondente.
 - Desafio aparece no centro do tabuleiro, escolhido por sexo/alvo, e efeitos podem alterar a rodada.
 - Salvamento automatico (retomar jogo ao abrir o site).
 
 ## Como jogar (usuario final)
-1. Preencha os nomes e selecione o sexo de cada jogador.
+1. Preencha os nomes, selecione o sexo e o emoji de cada jogador.
 2. Escolha o nivel (moderado, intenso, explicito).
 3. Role um dado fisico e toque no numero 1-6 correspondente.
 4. Leia o desafio no centro do tabuleiro e execute.
-5. O jogo alterna automaticamente a vez apos o clique no dado.
+5. O jogo alterna automaticamente a vez apos o clique no dado, mantendo o desafio visivel.
 
 ## Estrutura do projeto
 - `index.html`: HTML, CSS e JS em um unico arquivo.
@@ -65,14 +65,13 @@ Placeholders:
 
 ## Efeitos surpresa
 Definidos em `const efeitosSurpresa`:
-- `mover`: avanca/volta casas.
 - `trocar`: troca posicao entre jogadores.
 - `perder`: perde a vez.
 - `extra`: joga novamente (nao alterna).
 
 ## Salvamento
 - Chave do `localStorage`: `jogoCasal_save`.
-- Salva: nomes, sexo, nivel, posicoes, vez, flags de perder a vez, preview das casas e pools.
+- Salva: nomes, sexo, emoji, nivel, posicoes, vez, flags de perder a vez, preview das casas e pools.
 - Botao "Continuar" aparece se houver save.
 - Saves antigos sem sexo sao ignorados.
 
@@ -93,7 +92,7 @@ Sugestoes comuns e onde mexer:
   - Atualizar `UI.mostrarDesafio()` se precisar de estilo dedicado.
   - Ajustar `Game.processarCasa()` se houver regra especial.
 - Ajustar salvamento: `Storage.salvar()` e `Storage.carregar()`.
- - Fluxo da vez e status no centro: `UI.atualizarInfoJogo()` e texto do bloco do centro.
+- Fluxo da vez e status no centro: `UI.atualizarInfoJogo()` e texto do bloco do centro.
 
 ## Desenvolvimento local
 Basta abrir o `index.html` no navegador.

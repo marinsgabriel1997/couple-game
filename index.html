@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Jogo do Casal</title>
+  <title>Couple Game</title>
   <style>
     /* ============================================
        DESIGN SYSTEM - TEMA ADULTO ELEGANTE
@@ -32,7 +32,6 @@
       /* Tipos de casa */
       --casa-acao: #4a90d9;
       --casa-bonus: #4ade80;
-      --casa-penalidade: #f87171;
       --casa-escolha: #c084fc;
       --casa-repeticao: #facc15;
       --casa-surpresa: #f472b6;
@@ -214,6 +213,42 @@
       color: var(--text-muted);
     }
 
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+      gap: 6px;
+      background: var(--bg-card);
+      border: 2px solid var(--bg-elevated);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm);
+      max-height: 210px;
+      overflow-y: auto;
+    }
+
+    .emoji-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .emoji-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .emoji-btn.selected {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -299,8 +334,8 @@
 
     .btn-danger {
       background: transparent;
-      border-color: var(--casa-penalidade);
-      color: var(--casa-penalidade);
+      border-color: var(--accent-intenso);
+      color: var(--accent-intenso);
     }
 
     .btn-block {
@@ -461,21 +496,138 @@
       border: 2px solid var(--accent);
     }
 
+    .legenda-casas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-bottom: var(--space-sm);
+      font-size: 0.65rem;
+      color: var(--text-primary);
+    }
+
+    .legenda-nota {
+      width: 100%;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.6rem;
+    }
+
+    .legenda-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .legenda-cor {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      flex: 0 0 auto;
+    }
+
+    .legenda-cor.acao { background: var(--casa-acao); }
+    .legenda-cor.bonus { background: var(--casa-bonus); }
+    .legenda-cor.escolha { background: var(--casa-escolha); }
+    .legenda-cor.repeticao { background: var(--casa-repeticao); }
+    .legenda-cor.surpresa { background: var(--casa-surpresa); }
+    .legenda-cor.inicio { background: var(--casa-inicio); }
+    .legenda-cor.final { background: var(--casa-final); }
+
     .casa {
       background: var(--bg-card);
       border-radius: 4px;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       justify-content: flex-start;
       padding: 3px;
       position: relative;
       font-size: 0.5rem;
-      text-align: center;
+      text-align: left;
       transition: all var(--transition-fast);
       overflow: hidden;
       cursor: default;
       border: 2px solid transparent;
+    }
+
+    .casa-inner {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 4px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .casa-numero-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      border-right: 1px solid var(--bg-elevated);
+      padding-right: 2px;
+    }
+
+    .casa-conteudo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 4px;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .casa-slot {
+      width: 100%;
+      min-height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .casa-peao-slot {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 1px 4px;
+      border-radius: 10px;
+      background: var(--bg-primary);
+      border: 1px solid var(--bg-elevated);
+      font-size: 0.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      white-space: nowrap;
+      max-width: 70px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .casa-peao-slot.j1 {
+      border-color: var(--accent);
+    }
+
+    .casa-peao-slot.j2 {
+      border-color: var(--text-primary);
+    }
+
+    .casa-desafio {
+      font-size: var(--casa-texto-tamanho, 0.6rem);
+      line-height: 1.2;
+      word-break: break-word;
+      color: inherit;
+    }
+
+    .casa-divisor {
+      width: 100%;
+      height: 1px;
+      background: var(--bg-elevated);
     }
 
     .casa:hover {
@@ -489,88 +641,29 @@
       z-index: 10;
     }
 
-    .casa .casa-numero {
-      position: absolute;
-      top: 1px;
-      left: 2px;
-      font-size: 0.5rem;
-      color: var(--text-muted);
-      font-weight: 700;
+    .casa .casa-desafio.genero-homem {
+      color: #60a5fa;
     }
 
-    .casa .casa-icone {
-      font-size: 0.6rem;
-      margin: 2px 0 1px;
-      line-height: 1;
+    .casa .casa-desafio.genero-mulher {
+      color: #f472b6;
     }
 
-    .casa .casa-texto {
-      font-size: 0.4rem;
-      color: var(--text-secondary);
-      line-height: 1.15;
-      max-height: 3em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      word-break: break-word;
-    }
 
     /* Cores por tipo de casa */
-    .casa.acao { border-left: 3px solid var(--casa-acao); }
-    .casa.bonus { border-left: 3px solid var(--casa-bonus); }
-    .casa.penalidade { border-left: 3px solid var(--casa-penalidade); }
-    .casa.escolha { border-left: 3px solid var(--casa-escolha); }
-    .casa.repeticao { border-left: 3px solid var(--casa-repeticao); }
-    .casa.surpresa { border-left: 3px solid var(--casa-surpresa); }
-    .casa.inicio { border-left: 3px solid var(--casa-inicio); background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card)); }
-    .casa.final { border-left: 3px solid var(--casa-final); background: linear-gradient(135deg, var(--casa-final), var(--bg-card)); }
+    .casa.acao { border: 3px solid var(--casa-acao); }
+    .casa.bonus { border: 3px solid var(--casa-bonus); }
+    .casa.escolha { border: 3px solid var(--casa-escolha); }
+    .casa.repeticao { border: 3px solid var(--casa-repeticao); }
+    .casa.surpresa { border: 3px solid var(--casa-surpresa); }
+    .casa.inicio { border: 3px solid var(--casa-inicio); background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card)); }
+    .casa.final { border: 3px solid var(--casa-final); background: linear-gradient(135deg, var(--casa-final), var(--bg-card)); }
 
     .casa.atual.acao { border-color: var(--casa-acao); box-shadow: 0 0 12px var(--casa-acao); }
     .casa.atual.bonus { border-color: var(--casa-bonus); box-shadow: 0 0 12px var(--casa-bonus); }
-    .casa.atual.penalidade { border-color: var(--casa-penalidade); box-shadow: 0 0 12px var(--casa-penalidade); }
     .casa.atual.escolha { border-color: var(--casa-escolha); box-shadow: 0 0 12px var(--casa-escolha); }
     .casa.atual.repeticao { border-color: var(--casa-repeticao); box-shadow: 0 0 12px var(--casa-repeticao); }
     .casa.atual.surpresa { border-color: var(--casa-surpresa); box-shadow: 0 0 12px var(--casa-surpresa); }
-
-    /* Peões dos jogadores */
-    .casa .peao {
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      border-radius: var(--radius-full);
-      border: 2px solid var(--text-secondary);
-      z-index: 10;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      line-height: 1;
-      background: var(--bg-primary);
-    }
-
-    .casa .peao.j1 {
-      border-color: var(--accent);
-      top: 2px;
-      right: 2px;
-    }
-
-    .casa .peao.j2 {
-      border-color: var(--text-primary);
-      bottom: 2px;
-      right: 2px;
-    }
-
-    .casa .peao.ativo {
-      animation: pulse 1s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
-      50% { box-shadow: 0 0 0 6px transparent; }
-    }
 
     /* Centro do tabuleiro - Desafio Atual */
     .tabuleiro-overlay {
@@ -586,6 +679,7 @@
     .tabuleiro-centro {
       background: var(--bg-primary);
       border-radius: var(--radius-md);
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -626,7 +720,6 @@
 
     .centro-tipo.acao { background: var(--casa-acao); }
     .centro-tipo.bonus { background: var(--casa-bonus); }
-    .centro-tipo.penalidade { background: var(--casa-penalidade); }
     .centro-tipo.escolha { background: var(--casa-escolha); }
     .centro-tipo.repeticao { background: var(--casa-repeticao); }
     .centro-tipo.surpresa { background: var(--casa-surpresa); }
@@ -774,16 +867,12 @@
         font-size: 0.55rem;
       }
 
-      .casa .casa-texto {
+      .casa .casa-desafio {
         font-size: 0.5rem;
       }
 
       .centro-desafio {
         font-size: 1rem;
-      }
-
-      .casa-icone {
-        display: none;
       }
     }
 
@@ -833,11 +922,7 @@
         gap: 1px;
       }
 
-      .casa .casa-texto {
-        display: none;
-      }
-      
-      .casa-icone {
+      .casa .casa-desafio {
         display: none;
       }
     }
@@ -887,20 +972,8 @@
                 </div>
                 <div class="input-grupo">
                   <label class="input-label" for="emoji1">Emoji</label>
-                  <select class="input" id="emoji1">
-                    <option value="">Selecione</option>
-                    <option value="🧑">🧑 Pessoa</option>
-                    <option value="👩">👩 Mulher</option>
-                    <option value="👨">👨 Homem</option>
-                    <option value="👩‍🦱">👩‍🦱 Mulher cabelo cacheado</option>
-                    <option value="👨‍🦱">👨‍🦱 Homem cabelo cacheado</option>
-                    <option value="👩‍🦰">👩‍🦰 Mulher cabelo ruivo</option>
-                    <option value="👨‍🦰">👨‍🦰 Homem cabelo ruivo</option>
-                    <option value="👩‍🦳">👩‍🦳 Mulher cabelo branco</option>
-                    <option value="👨‍🦳">👨‍🦳 Homem cabelo branco</option>
-                    <option value="👩‍🦲">👩‍🦲 Mulher careca</option>
-                    <option value="👨‍🦲">👨‍🦲 Homem careca</option>
-                  </select>
+                  <input type="hidden" id="emoji1" value="">
+                  <div class="emoji-grid" id="emojiGrid1" aria-label="Escolher emoji do jogador 1"></div>
                 </div>
               </div>
 
@@ -920,25 +993,14 @@
                 </div>
                 <div class="input-grupo">
                   <label class="input-label" for="emoji2">Emoji</label>
-                  <select class="input" id="emoji2">
-                    <option value="">Selecione</option>
-                    <option value="🧑">🧑 Pessoa</option>
-                    <option value="👩">👩 Mulher</option>
-                    <option value="👨">👨 Homem</option>
-                    <option value="👩‍🦱">👩‍🦱 Mulher cabelo cacheado</option>
-                    <option value="👨‍🦱">👨‍🦱 Homem cabelo cacheado</option>
-                    <option value="👩‍🦰">👩‍🦰 Mulher cabelo ruivo</option>
-                    <option value="👨‍🦰">👨‍🦰 Homem cabelo ruivo</option>
-                    <option value="👩‍🦳">👩‍🦳 Mulher cabelo branco</option>
-                    <option value="👨‍🦳">👨‍🦳 Homem cabelo branco</option>
-                    <option value="👩‍🦲">👩‍🦲 Mulher careca</option>
-                    <option value="👨‍🦲">👨‍🦲 Homem careca</option>
-                  </select>
+                  <input type="hidden" id="emoji2" value="">
+                  <div class="emoji-grid" id="emojiGrid2" aria-label="Escolher emoji do jogador 2"></div>
                 </div>
               </div>
             </div>
 
             <div class="btn-stack">
+              <button class="btn btn-outline btn-block" id="btnPreencher">Preencher rápido</button>
               <button class="btn btn-primary btn-block" id="btnAvancar" disabled>Avançar</button>
               <button class="btn btn-outline btn-block hidden" id="btnContinuar">Continuar jogo salvo</button>
               <button class="btn btn-danger btn-block hidden" id="btnApagar">Apagar salvamento</button>
@@ -1025,6 +1087,16 @@
                 <button class="btn btn-dado" data-valor="5">5</button>
                 <button class="btn btn-dado" data-valor="6">6</button>
               </div>
+              <div class="legenda-casas" aria-label="Legenda das casas">
+                <div class="legenda-item"><span class="legenda-cor inicio"></span>Início</div>
+                <div class="legenda-item"><span class="legenda-cor final"></span>Final</div>
+                <div class="legenda-item"><span class="legenda-cor acao"></span>Ação</div>
+                <div class="legenda-item"><span class="legenda-cor bonus"></span>Bônus</div>
+                <div class="legenda-item"><span class="legenda-cor escolha"></span>Escolha</div>
+                <div class="legenda-item"><span class="legenda-cor repeticao"></span>Repetição</div>
+                <div class="legenda-item"><span class="legenda-cor surpresa"></span>Surpresa</div>
+                <div class="legenda-nota">Texto do desafio usa a cor do gênero.</div>
+              </div>
               <div class="acoes-grid">
                 <button class="btn btn-ghost" id="btnReiniciar">Reiniciar</button>
               </div>
@@ -1059,141 +1131,119 @@
       moderado: {
         tabuleiro: [
           "inicio", "acao", "bonus", "escolha", "acao", "surpresa",
-          "bonus", "acao", "penalidade", "acao", "repeticao", "bonus",
+          "bonus", "acao", "bonus", "acao", "repeticao", "bonus",
           "acao", "escolha", "surpresa", "acao", "bonus", "acao",
-          "penalidade", "acao", "escolha", "bonus", "acao", "final"
+          "bonus", "acao", "escolha", "bonus", "acao", "final"
         ],
         desafios: {
           acao: {
             generico: [
-              "Dê um abraço demorado em {parceiro}.",
-              "Segure as mãos de {parceiro} e respire junto por 20 segundos."
+              { descricao: "Dê um abraço demorado em", desafio: "Dê um abraço demorado em {parceiro}." },
+              { descricao: "Segure as mãos de {parceiro}", desafio: "Segure as mãos de {parceiro} e respire junto por 20 segundos." }
             ],
             jogador_homem: [
-              "{jogador}, dê um beijo suave na testa de {parceiro}.",
-              "{jogador}, faça um elogio romântico olhando nos olhos de {parceiro}."
+              { descricao: "Dê um beijo suave na", desafio: "{jogador}, dê um beijo suave na testa de {parceiro}." },
+              { descricao: "Faça um elogio romântico olhando", desafio: "{jogador}, faça um elogio romântico olhando nos olhos de {parceiro}." }
             ],
             jogador_mulher: [
-              "{jogador}, dê um beijo delicado na bochecha de {parceiro}.",
-              "{jogador}, faça um carinho no rosto de {parceiro} por 20 segundos."
+              { descricao: "Dê um beijo delicado na", desafio: "{jogador}, dê um beijo delicado na bochecha de {parceiro}." },
+              { descricao: "Faça um carinho no rosto", desafio: "{jogador}, faça um carinho no rosto de {parceiro} por 20 segundos." }
             ],
             parceiro_homem: [
-              "Deixe {parceiro} escolher onde {ele_ela_parceiro} quer receber um beijo.",
-              "Faça uma massagem rápida nos ombros de {parceiro}."
+              { descricao: "Deixe {parceiro} escolher onde {ele_ela_parceiro}", desafio: "Deixe {parceiro} escolher onde {ele_ela_parceiro} quer receber um beijo." },
+              { descricao: "Faça uma massagem rápida nos", desafio: "Faça uma massagem rápida nos ombros de {parceiro}." }
             ],
             parceiro_mulher: [
-              "Dê um beijo na mão de {parceiro} e elogie {ele_ela_parceiro}.",
-              "Olhe nos olhos de {parceiro} e diga algo que admira em {parceiro}."
+              { descricao: "Dê um beijo na mão", desafio: "Dê um beijo na mão de {parceiro} e elogie {ele_ela_parceiro}." },
+              { descricao: "Olhe nos olhos de {parceiro}", desafio: "Olhe nos olhos de {parceiro} e diga algo que admira em {parceiro}." }
             ]
           },
           bonus: {
             generico: [
-              "Vocês ficam 30 segundos abraçados.",
-              "{parceiro} escolhe a música do momento."
+              { descricao: "Vocês ficam 30 segundos abraçados", desafio: "Vocês ficam 30 segundos abraçados." },
+              { descricao: "Escolhe a música do momento", desafio: "{parceiro} escolhe a música do momento." }
             ],
             jogador_homem: [
-              "{jogador}, peça a {parceiro} um carinho específico.",
-              "{jogador}, receba um beijo bônus de {parceiro}."
+              { descricao: "Peça a {parceiro} um carinho", desafio: "{jogador}, peça a {parceiro} um carinho específico." },
+              { descricao: "Receba um beijo bônus de", desafio: "{jogador}, receba um beijo bônus de {parceiro}." }
             ],
             jogador_mulher: [
-              "{jogador}, escolha um beijo extra para receber.",
-              "{jogador}, ganhe uma massagem rápida de {parceiro}."
+              { descricao: "Escolha um beijo extra para", desafio: "{jogador}, escolha um beijo extra para receber." },
+              { descricao: "Ganhe uma massagem rápida de", desafio: "{jogador}, ganhe uma massagem rápida de {parceiro}." }
             ],
             parceiro_homem: [
-              "{parceiro} ganha um beijo extra onde {ele_ela_parceiro} quiser.",
-              "Faça uma massagem nas mãos de {parceiro} por 30 segundos."
+              { descricao: "Ganha um beijo extra onde", desafio: "{parceiro} ganha um beijo extra onde {ele_ela_parceiro} quiser." },
+              { descricao: "Faça uma massagem nas mãos", desafio: "Faça uma massagem nas mãos de {parceiro} por 30 segundos." }
             ],
             parceiro_mulher: [
-              "{parceiro} escolhe um carinho para receber agora.",
-              "Dê um abraço longo em {parceiro}."
-            ]
-          },
-          penalidade: {
-            generico: [
-              "Fique 1 rodada sem tocar em {parceiro}.",
-              "Conte um momento engraçado que viveu com {parceiro}."
-            ],
-            jogador_homem: [
-              "{jogador}, fique 1 rodada sem beijar {parceiro}.",
-              "{jogador}, {parceiro} escolhe seu próximo desafio."
-            ],
-            jogador_mulher: [
-              "{jogador}, não pode dar beijo na boca por 1 rodada.",
-              "{jogador}, faça uma pose divertida por 15 segundos."
-            ],
-            parceiro_homem: [
-              "Deixe {parceiro} escolher seu próximo desafio.",
-              "Fique 1 rodada sem abraçar {parceiro}."
-            ],
-            parceiro_mulher: [
-              "Fique 1 rodada sem beijar {parceiro}.",
-              "Conte algo bobo que você fez para impressionar {parceiro}."
+              { descricao: "Escolhe um carinho para receber", desafio: "{parceiro} escolhe um carinho para receber agora." },
+              { descricao: "Dê um abraço longo em", desafio: "Dê um abraço longo em {parceiro}." }
             ]
           },
           escolha: {
             generico: [
-              "Escolha: beijo longo OU cinco beijos rápidos em {parceiro}.",
-              "Escolha: massagem nas mãos OU no pescoço de {parceiro}."
+              { descricao: "Escolha: beijo longo OU cinco", desafio: "Escolha: beijo longo OU cinco beijos rápidos em {parceiro}." },
+              { descricao: "Escolha: massagem nas mãos OU", desafio: "Escolha: massagem nas mãos OU no pescoço de {parceiro}." }
             ],
             jogador_homem: [
-              "{jogador}, escolha: abraço longo OU dança lenta com {parceiro}.",
-              "{jogador}, escolha: beijo no pescoço OU na testa de {parceiro}."
+              { descricao: "Escolha: abraço longo OU dança", desafio: "{jogador}, escolha: abraço longo OU dança lenta com {parceiro}." },
+              { descricao: "Escolha: beijo no pescoço OU", desafio: "{jogador}, escolha: beijo no pescoço OU na testa de {parceiro}." }
             ],
             jogador_mulher: [
-              "{jogador}, escolha: beijo na bochecha OU no pescoço de {parceiro}.",
-              "{jogador}, escolha: elogio romântico OU promessa fofa para {parceiro}."
+              { descricao: "Escolha: beijo na bochecha OU", desafio: "{jogador}, escolha: beijo na bochecha OU no pescoço de {parceiro}." },
+              { descricao: "Escolha: elogio romântico OU promessa", desafio: "{jogador}, escolha: elogio romântico OU promessa fofa para {parceiro}." }
             ],
             parceiro_homem: [
-              "Pergunte a {parceiro} se {ele_ela_parceiro} prefere abraço longo OU olhar nos olhos.",
-              "Deixe {parceiro} escolher: massagem no ombro OU nas mãos."
+              { descricao: "Pergunte a {parceiro} se {ele_ela_parceiro}", desafio: "Pergunte a {parceiro} se {ele_ela_parceiro} prefere abraço longo OU olhar nos olhos." },
+              { descricao: "Deixe {parceiro} escolher: massagem no", desafio: "Deixe {parceiro} escolher: massagem no ombro OU nas mãos." }
             ],
             parceiro_mulher: [
-              "Deixe {parceiro} escolher: beijo na mão OU na bochecha.",
-              "Ofereça a {parceiro} a escolha entre abraço longo OU massagem rápida."
+              { descricao: "Deixe {parceiro} escolher: beijo na", desafio: "Deixe {parceiro} escolher: beijo na mão OU na bochecha." },
+              { descricao: "Ofereça a {parceiro} a escolha", desafio: "Ofereça a {parceiro} a escolha entre abraço longo OU massagem rápida." }
             ]
           },
           repeticao: {
             generico: [
-              "Repita o último carinho que recebeu de {parceiro}.",
-              "Recrie o momento mais fofo até agora."
+              { descricao: "Repita o último carinho que", desafio: "Repita o último carinho que recebeu de {parceiro}." },
+              { descricao: "Recrie o momento mais fofo", desafio: "Recrie o momento mais fofo até agora." }
             ],
             jogador_homem: [
-              "{jogador}, repita o último beijo que deu em {parceiro}.",
-              "{jogador}, faça novamente o último elogio que fez."
+              { descricao: "Repita o último beijo que", desafio: "{jogador}, repita o último beijo que deu em {parceiro}." },
+              { descricao: "Faça novamente o último elogio", desafio: "{jogador}, faça novamente o último elogio que fez." }
             ],
             jogador_mulher: [
-              "{jogador}, repita o último abraço em {parceiro}.",
-              "{jogador}, faça de novo o último carinho nas mãos."
+              { descricao: "Repita o último abraço em", desafio: "{jogador}, repita o último abraço em {parceiro}." },
+              { descricao: "Faça de novo o último", desafio: "{jogador}, faça de novo o último carinho nas mãos." }
             ],
             parceiro_homem: [
-              "Repita o último carinho que fez em {parceiro}.",
-              "Deixe {parceiro} pedir para repetir um gesto de hoje."
+              { descricao: "Repita o último carinho que", desafio: "Repita o último carinho que fez em {parceiro}." },
+              { descricao: "Deixe {parceiro} pedir para repetir", desafio: "Deixe {parceiro} pedir para repetir um gesto de hoje." }
             ],
             parceiro_mulher: [
-              "Refaça o último beijo dado em {parceiro}.",
-              "Repita a última massagem que fez em {parceiro}."
+              { descricao: "Refaça o último beijo dado", desafio: "Refaça o último beijo dado em {parceiro}." },
+              { descricao: "Repita a última massagem que", desafio: "Repita a última massagem que fez em {parceiro}." }
             ]
           },
           surpresa: {
             generico: [
-              "Surpresa! Troquem um beijo onde cada um escolher.",
-              "Surpresa! Fiquem 20 segundos de olhos fechados, mãos dadas."
+              { descricao: "Surpresa", desafio: "Surpresa! Troquem um beijo onde cada um escolher." },
+              { descricao: "Surpresa", desafio: "Surpresa! Fiquem 20 segundos de olhos fechados, mãos dadas." }
             ],
             jogador_homem: [
-              "{jogador}, surpresa: faça um elogio específico e dê um beijo em {parceiro}.",
-              "{jogador}, surpresa: conduza {parceiro} para uma dança lenta de 20 segundos."
+              { descricao: "Surpresa: faça um elogio específico", desafio: "{jogador}, surpresa: faça um elogio específico e dê um beijo em {parceiro}." },
+              { descricao: "Surpresa: conduza {parceiro} para uma", desafio: "{jogador}, surpresa: conduza {parceiro} para uma dança lenta de 20 segundos." }
             ],
             jogador_mulher: [
-              "{jogador}, surpresa: dê um abraço apertado e um beijo na testa de {parceiro}.",
-              "{jogador}, surpresa: sussurre algo carinhoso e beije {parceiro}."
+              { descricao: "Surpresa: dê um abraço apertado", desafio: "{jogador}, surpresa: dê um abraço apertado e um beijo na testa de {parceiro}." },
+              { descricao: "Surpresa: sussurre algo carinhoso e", desafio: "{jogador}, surpresa: sussurre algo carinhoso e beije {parceiro}." }
             ],
             parceiro_homem: [
-              "Surpresa: {parceiro} escolhe um beijo extra agora.",
-              "Surpresa: faça uma massagem rápida em {parceiro} e diga por que gosta de {ele_ela_parceiro}."
+              { descricao: "Surpresa: {parceiro} escolhe um beijo", desafio: "Surpresa: {parceiro} escolhe um beijo extra agora." },
+              { descricao: "Surpresa: faça uma massagem rápida", desafio: "Surpresa: faça uma massagem rápida em {parceiro} e diga por que gosta de {ele_ela_parceiro}." }
             ],
             parceiro_mulher: [
-              "Surpresa: {parceiro} escolhe um carinho extra agora.",
-              "Surpresa: olhe para {parceiro} e diga algo que te encanta."
+              { descricao: "Surpresa: {parceiro} escolhe um carinho", desafio: "Surpresa: {parceiro} escolhe um carinho extra agora." },
+              { descricao: "Surpresa: olhe para {parceiro} e", desafio: "Surpresa: olhe para {parceiro} e diga algo que te encanta." }
             ]
           }
         }
@@ -1201,141 +1251,119 @@
       intenso: {
         tabuleiro: [
           "inicio", "acao", "surpresa", "acao", "bonus", "acao",
-          "escolha", "surpresa", "acao", "penalidade", "acao", "repeticao",
+          "escolha", "surpresa", "acao", "bonus", "acao", "repeticao",
           "acao", "surpresa", "escolha", "acao", "bonus", "acao",
-          "surpresa", "acao", "penalidade", "acao", "bonus", "final"
+          "surpresa", "acao", "bonus", "acao", "bonus", "final"
         ],
         desafios: {
           acao: {
             generico: [
-              "Beije o pescoço de {parceiro} por 10 segundos.",
-              "Passe as mãos lentamente pelas costas de {parceiro}."
+              { descricao: "Beije o pescoço de {parceiro}", desafio: "Beije o pescoço de {parceiro} por 10 segundos." },
+              { descricao: "Passe as mãos lentamente pelas", desafio: "Passe as mãos lentamente pelas costas de {parceiro}." }
             ],
             jogador_homem: [
-              "{jogador}, faça uma mordida leve no ombro de {parceiro}.",
-              "{jogador}, sussurre algo provocante no ouvido de {parceiro}."
+              { descricao: "Faça uma mordida leve no", desafio: "{jogador}, faça uma mordida leve no ombro de {parceiro}." },
+              { descricao: "Sussurre algo provocante no ouvido", desafio: "{jogador}, sussurre algo provocante no ouvido de {parceiro}." }
             ],
             jogador_mulher: [
-              "{jogador}, dê um beijo provocante no pescoço de {parceiro}.",
-              "{jogador}, faça um toque lento nas costas de {parceiro}."
+              { descricao: "Dê um beijo provocante no", desafio: "{jogador}, dê um beijo provocante no pescoço de {parceiro}." },
+              { descricao: "Faça um toque lento nas", desafio: "{jogador}, faça um toque lento nas costas de {parceiro}." }
             ],
             parceiro_homem: [
-              "Deixe {parceiro} guiar suas mãos por 10 segundos.",
-              "Dê um beijo demorado em {parceiro} e encoste o corpo."
+              { descricao: "Deixe {parceiro} guiar suas mãos", desafio: "Deixe {parceiro} guiar suas mãos por 10 segundos." },
+              { descricao: "Dê um beijo demorado em", desafio: "Dê um beijo demorado em {parceiro} e encoste o corpo." }
             ],
             parceiro_mulher: [
-              "Deixe {parceiro} escolher onde receber um beijo.",
-              "Faça uma massagem sensual nas coxas de {parceiro} por cima da roupa."
+              { descricao: "Deixe {parceiro} escolher onde receber", desafio: "Deixe {parceiro} escolher onde receber um beijo." },
+              { descricao: "Faça uma massagem sensual nas", desafio: "Faça uma massagem sensual nas coxas de {parceiro} por cima da roupa." }
             ]
           },
           bonus: {
             generico: [
-              "Tirem uma peça de roupa cada um.",
-              "Beijos livres por onde {parceiro} quiser por 20 segundos."
+              { descricao: "Tirem uma peça de roupa", desafio: "Tirem uma peça de roupa cada um." },
+              { descricao: "Beijos livres por onde {parceiro}", desafio: "Beijos livres por onde {parceiro} quiser por 20 segundos." }
             ],
             jogador_homem: [
-              "{jogador}, peça um toque sensual de {parceiro} por 30 segundos.",
-              "{jogador}, receba um beijo longo e lento de {parceiro}."
+              { descricao: "Peça um toque sensual de", desafio: "{jogador}, peça um toque sensual de {parceiro} por 30 segundos." },
+              { descricao: "Receba um beijo longo e", desafio: "{jogador}, receba um beijo longo e lento de {parceiro}." }
             ],
             jogador_mulher: [
-              "{jogador}, escolha uma região para receber carinhos por 30 segundos.",
-              "{jogador}, ganhe uma massagem na coxa de {parceiro}."
+              { descricao: "Escolha uma região para receber", desafio: "{jogador}, escolha uma região para receber carinhos por 30 segundos." },
+              { descricao: "Ganhe uma massagem na coxa", desafio: "{jogador}, ganhe uma massagem na coxa de {parceiro}." }
             ],
             parceiro_homem: [
-              "{parceiro} pode pedir um beijo onde {ele_ela_parceiro} quiser.",
-              "Dê a {parceiro} 30 segundos de carinhos sem pressa."
+              { descricao: "Pode pedir um beijo onde", desafio: "{parceiro} pode pedir um beijo onde {ele_ela_parceiro} quiser." },
+              { descricao: "Dê a {parceiro} 30 segundos", desafio: "Dê a {parceiro} 30 segundos de carinhos sem pressa." }
             ],
             parceiro_mulher: [
-              "{parceiro} escolhe a próxima peça de roupa a tirar.",
-              "Faça uma massagem lenta nos ombros de {parceiro}."
-            ]
-          },
-          penalidade: {
-            generico: [
-              "Fique sem beijar por 2 rodadas.",
-              "Confesse uma fantasia leve."
-            ],
-            jogador_homem: [
-              "{jogador}, {parceiro} te provoca por 20 segundos sem você reagir.",
-              "{jogador}, dance de forma provocante por 20 segundos."
-            ],
-            jogador_mulher: [
-              "{jogador}, fique sem tocar em {parceiro} por 1 rodada.",
-              "{jogador}, conte algo que te deixa com vontade."
-            ],
-            parceiro_homem: [
-              "Deixe {parceiro} escolher seu próximo desafio.",
-              "Fique 1 rodada sem beijar {parceiro}."
-            ],
-            parceiro_mulher: [
-              "Deixe {parceiro} te provocar por 20 segundos.",
-              "Conte algo que você faria se pudesse tudo agora."
+              { descricao: "Escolhe a próxima peça de", desafio: "{parceiro} escolhe a próxima peça de roupa a tirar." },
+              { descricao: "Faça uma massagem lenta nos", desafio: "Faça uma massagem lenta nos ombros de {parceiro}." }
             ]
           },
           escolha: {
             generico: [
-              "Escolha: beijo no pescoço OU mordida leve em {parceiro}.",
-              "Escolha: massagem sensual OU dança provocante para {parceiro}."
+              { descricao: "Escolha: beijo no pescoço OU", desafio: "Escolha: beijo no pescoço OU mordida leve em {parceiro}." },
+              { descricao: "Escolha: massagem sensual OU dança", desafio: "Escolha: massagem sensual OU dança provocante para {parceiro}." }
             ],
             jogador_homem: [
-              "{jogador}, escolha: tirar sua camisa OU tirar a de {parceiro}.",
-              "{jogador}, escolha: sussurrar provocações OU demonstrar com toques."
+              { descricao: "Escolha: tirar sua camisa OU", desafio: "{jogador}, escolha: tirar sua camisa OU tirar a de {parceiro}." },
+              { descricao: "Escolha: sussurrar provocações OU demonstrar", desafio: "{jogador}, escolha: sussurrar provocações OU demonstrar com toques." }
             ],
             jogador_mulher: [
-              "{jogador}, escolha: beijo longo OU carícias nas costas de {parceiro}.",
-              "{jogador}, escolha: 1 minuto de beijos OU 1 minuto de carinhos."
+              { descricao: "Escolha: beijo longo OU carícias", desafio: "{jogador}, escolha: beijo longo OU carícias nas costas de {parceiro}." },
+              { descricao: "Escolha: 1 minuto de beijos", desafio: "{jogador}, escolha: 1 minuto de beijos OU 1 minuto de carinhos." }
             ],
             parceiro_homem: [
-              "Pergunte a {parceiro} se {ele_ela_parceiro} prefere beijos OU carícias.",
-              "Deixe {parceiro} escolher a posição para os próximos 20 segundos."
+              { descricao: "Pergunte a {parceiro} se {ele_ela_parceiro}", desafio: "Pergunte a {parceiro} se {ele_ela_parceiro} prefere beijos OU carícias." },
+              { descricao: "Deixe {parceiro} escolher a posição", desafio: "Deixe {parceiro} escolher a posição para os próximos 20 segundos." }
             ],
             parceiro_mulher: [
-              "Deixe {parceiro} escolher: beijos lentos OU toques provocantes.",
-              "Ofereça a {parceiro} a escolha entre abraço colado OU beijos no pescoço."
+              { descricao: "Deixe {parceiro} escolher: beijos lentos", desafio: "Deixe {parceiro} escolher: beijos lentos OU toques provocantes." },
+              { descricao: "Ofereça a {parceiro} a escolha", desafio: "Ofereça a {parceiro} a escolha entre abraço colado OU beijos no pescoço." }
             ]
           },
           repeticao: {
             generico: [
-              "Repita o último toque sensual que recebeu.",
-              "Recrie o momento mais provocante até agora."
+              { descricao: "Repita o último toque sensual", desafio: "Repita o último toque sensual que recebeu." },
+              { descricao: "Recrie o momento mais provocante", desafio: "Recrie o momento mais provocante até agora." }
             ],
             jogador_homem: [
-              "{jogador}, repita o último beijo longo em {parceiro}.",
-              "{jogador}, faça de novo o último carinho na coxa de {parceiro}."
+              { descricao: "Repita o último beijo longo", desafio: "{jogador}, repita o último beijo longo em {parceiro}." },
+              { descricao: "Faça de novo o último", desafio: "{jogador}, faça de novo o último carinho na coxa de {parceiro}." }
             ],
             jogador_mulher: [
-              "{jogador}, repita o último beijo no pescoço.",
-              "{jogador}, faça novamente o último toque lento."
+              { descricao: "Repita o último beijo no", desafio: "{jogador}, repita o último beijo no pescoço." },
+              { descricao: "Faça novamente o último toque", desafio: "{jogador}, faça novamente o último toque lento." }
             ],
             parceiro_homem: [
-              "Refaça o último beijo dado em {parceiro}.",
-              "Deixe {parceiro} pedir para repetir um toque."
+              { descricao: "Refaça o último beijo dado", desafio: "Refaça o último beijo dado em {parceiro}." },
+              { descricao: "Deixe {parceiro} pedir para repetir", desafio: "Deixe {parceiro} pedir para repetir um toque." }
             ],
             parceiro_mulher: [
-              "Repita o último gesto sensual com {parceiro}.",
-              "Deixe {parceiro} escolher algo para repetir."
+              { descricao: "Repita o último gesto sensual", desafio: "Repita o último gesto sensual com {parceiro}." },
+              { descricao: "Deixe {parceiro} escolher algo para", desafio: "Deixe {parceiro} escolher algo para repetir." }
             ]
           },
           surpresa: {
             generico: [
-              "Surpresa! 20 segundos de beijos sem parar.",
-              "Surpresa! Olhares intensos e toque leve por 20 segundos."
+              { descricao: "Surpresa", desafio: "Surpresa! 20 segundos de beijos sem parar." },
+              { descricao: "Surpresa", desafio: "Surpresa! Olhares intensos e toque leve por 20 segundos." }
             ],
             jogador_homem: [
-              "{jogador}, surpresa: beije {parceiro} lentamente e encoste o corpo.",
-              "{jogador}, surpresa: toque nas costas de {parceiro} e sussurre algo ousado."
+              { descricao: "Surpresa: beije {parceiro} lentamente e", desafio: "{jogador}, surpresa: beije {parceiro} lentamente e encoste o corpo." },
+              { descricao: "Surpresa: toque nas costas de", desafio: "{jogador}, surpresa: toque nas costas de {parceiro} e sussurre algo ousado." }
             ],
             jogador_mulher: [
-              "{jogador}, surpresa: dê um beijo provocante e um sorriso.",
-              "{jogador}, surpresa: faça um carinho lento na nuca de {parceiro}."
+              { descricao: "Surpresa: dê um beijo provocante", desafio: "{jogador}, surpresa: dê um beijo provocante e um sorriso." },
+              { descricao: "Surpresa: faça um carinho lento", desafio: "{jogador}, surpresa: faça um carinho lento na nuca de {parceiro}." }
             ],
             parceiro_homem: [
-              "Surpresa: {parceiro} escolhe um beijo extra agora.",
-              "Surpresa: faça um abraço colado e diga algo que te provoca em {parceiro}."
+              { descricao: "Surpresa: {parceiro} escolhe um beijo", desafio: "Surpresa: {parceiro} escolhe um beijo extra agora." },
+              { descricao: "Surpresa: faça um abraço colado", desafio: "Surpresa: faça um abraço colado e diga algo que te provoca em {parceiro}." }
             ],
             parceiro_mulher: [
-              "Surpresa: {parceiro} escolhe onde receber carinhos.",
-              "Surpresa: dê um beijo lento e diga algo que te provoca em {parceiro}."
+              { descricao: "Surpresa: {parceiro} escolhe onde receber", desafio: "Surpresa: {parceiro} escolhe onde receber carinhos." },
+              { descricao: "Surpresa: dê um beijo lento", desafio: "Surpresa: dê um beijo lento e diga algo que te provoca em {parceiro}." }
             ]
           }
         }
@@ -1343,141 +1371,119 @@
       explicito: {
         tabuleiro: [
           "inicio", "acao", "bonus", "acao", "surpresa", "acao",
-          "escolha", "acao", "penalidade", "acao", "repeticao", "acao",
+          "escolha", "acao", "bonus", "acao", "repeticao", "acao",
           "bonus", "acao", "surpresa", "acao", "escolha", "acao",
-          "penalidade", "acao", "bonus", "acao", "surpresa", "final"
+          "bonus", "acao", "bonus", "acao", "surpresa", "final"
         ],
         desafios: {
           acao: {
             generico: [
-              "Beije {parceiro} com intensidade e mãos pelo corpo.",
-              "Faça carícias mais ousadas em {parceiro} por 30 segundos."
+              { descricao: "Beije {parceiro} com intensidade e", desafio: "Beije {parceiro} com intensidade e mãos pelo corpo." },
+              { descricao: "Faça carícias mais ousadas em", desafio: "Faça carícias mais ousadas em {parceiro} por 30 segundos." }
             ],
             jogador_homem: [
-              "{jogador}, provoque {parceiro} com beijos e toques mais diretos.",
-              "{jogador}, sussurre exatamente o que quer fazer com {parceiro}."
+              { descricao: "Provoque {parceiro} com beijos e", desafio: "{jogador}, provoque {parceiro} com beijos e toques mais diretos." },
+              { descricao: "Sussurre exatamente o que quer", desafio: "{jogador}, sussurre exatamente o que quer fazer com {parceiro}." }
             ],
             jogador_mulher: [
-              "{jogador}, faça carícias mais ousadas e beije {parceiro} sem pressa.",
-              "{jogador}, diga a {parceiro} o que deseja agora e mostre com toques."
+              { descricao: "Faça carícias mais ousadas e", desafio: "{jogador}, faça carícias mais ousadas e beije {parceiro} sem pressa." },
+              { descricao: "Diga a {parceiro} o que", desafio: "{jogador}, diga a {parceiro} o que deseja agora e mostre com toques." }
             ],
             parceiro_homem: [
-              "Deixe {parceiro} guiar sua mão onde {ele_ela_parceiro} quiser por alguns segundos.",
-              "Dê um beijo intenso em {parceiro} e mantenha o corpo colado."
+              { descricao: "Deixe {parceiro} guiar sua mão", desafio: "Deixe {parceiro} guiar sua mão onde {ele_ela_parceiro} quiser por alguns segundos." },
+              { descricao: "Dê um beijo intenso em", desafio: "Dê um beijo intenso em {parceiro} e mantenha o corpo colado." }
             ],
             parceiro_mulher: [
-              "Permita que {parceiro} conduza o ritmo dos beijos por 30 segundos.",
-              "Faça carícias mais ousadas em {parceiro} e mantenha contato visual."
+              { descricao: "Permita que {parceiro} conduza o", desafio: "Permita que {parceiro} conduza o ritmo dos beijos por 30 segundos." },
+              { descricao: "Faça carícias mais ousadas em", desafio: "Faça carícias mais ousadas em {parceiro} e mantenha contato visual." }
             ]
           },
           bonus: {
             generico: [
-              "Tirem mais uma peça de roupa cada um.",
-              "Beijos e carícias livres por 40 segundos."
+              { descricao: "Tirem mais uma peça de", desafio: "Tirem mais uma peça de roupa cada um." },
+              { descricao: "Beijos e carícias livres por", desafio: "Beijos e carícias livres por 40 segundos." }
             ],
             jogador_homem: [
-              "{jogador}, peça uma carícia específica e receba agora.",
-              "{jogador}, ganhe 30 segundos de toques onde quiser."
+              { descricao: "Peça uma carícia específica e", desafio: "{jogador}, peça uma carícia específica e receba agora." },
+              { descricao: "Ganhe 30 segundos de toques", desafio: "{jogador}, ganhe 30 segundos de toques onde quiser." }
             ],
             jogador_mulher: [
-              "{jogador}, escolha um desejo para {parceiro} cumprir agora.",
-              "{jogador}, receba beijos e carícias por 30 segundos."
+              { descricao: "Escolha um desejo para {parceiro}", desafio: "{jogador}, escolha um desejo para {parceiro} cumprir agora." },
+              { descricao: "Receba beijos e carícias por", desafio: "{jogador}, receba beijos e carícias por 30 segundos." }
             ],
             parceiro_homem: [
-              "{parceiro} escolhe um desejo para você cumprir.",
-              "Dê a {parceiro} 30 segundos de carinho intenso."
+              { descricao: "Escolhe um desejo para você", desafio: "{parceiro} escolhe um desejo para você cumprir." },
+              { descricao: "Dê a {parceiro} 30 segundos", desafio: "Dê a {parceiro} 30 segundos de carinho intenso." }
             ],
             parceiro_mulher: [
-              "{parceiro} escolhe onde receber beijos e carícias por 30 segundos.",
-              "Faça uma massagem lenta e provocante em {parceiro}."
-            ]
-          },
-          penalidade: {
-            generico: [
-              "Fique 1 rodada sem tocar nas partes íntimas.",
-              "Fique 1 rodada sem beijar na boca."
-            ],
-            jogador_homem: [
-              "{jogador}, {parceiro} escolhe seu próximo desafio.",
-              "{jogador}, fique 30 segundos sem tocar em {parceiro} enquanto {ele_ela_parceiro} provoca."
-            ],
-            jogador_mulher: [
-              "{jogador}, fique 1 rodada sem toques mais ousados.",
-              "{jogador}, descreva uma fantasia mais explícita."
-            ],
-            parceiro_homem: [
-              "Deixe {parceiro} escolher sua próxima ação.",
-              "Fique 1 rodada sem beijar {parceiro}."
-            ],
-            parceiro_mulher: [
-              "Deixe {parceiro} te provocar por 30 segundos sem revidar.",
-              "Conte a {parceiro} algo bem ousado que gostaria de fazer."
+              { descricao: "Escolhe onde receber beijos e", desafio: "{parceiro} escolhe onde receber beijos e carícias por 30 segundos." },
+              { descricao: "Faça uma massagem lenta e", desafio: "Faça uma massagem lenta e provocante em {parceiro}." }
             ]
           },
           escolha: {
             generico: [
-              "Escolha: beijos intensos OU carícias mais ousadas.",
-              "Escolha: tirar uma peça de roupa OU dar 30 segundos de toques."
+              { descricao: "Escolha: beijos intensos OU carícias", desafio: "Escolha: beijos intensos OU carícias mais ousadas." },
+              { descricao: "Escolha: tirar uma peça de", desafio: "Escolha: tirar uma peça de roupa OU dar 30 segundos de toques." }
             ],
             jogador_homem: [
-              "{jogador}, escolha: comandar o ritmo dos beijos OU ser guiado por {parceiro}.",
-              "{jogador}, escolha: toques mais diretos OU beijos demorados."
+              { descricao: "Escolha: comandar o ritmo dos", desafio: "{jogador}, escolha: comandar o ritmo dos beijos OU ser guiado por {parceiro}." },
+              { descricao: "Escolha: toques mais diretos OU", desafio: "{jogador}, escolha: toques mais diretos OU beijos demorados." }
             ],
             jogador_mulher: [
-              "{jogador}, escolha: conduzir o ritmo OU pedir para {parceiro} conduzir.",
-              "{jogador}, escolha: 30 segundos de carícias OU 30 segundos de beijos intensos."
+              { descricao: "Escolha: conduzir o ritmo OU", desafio: "{jogador}, escolha: conduzir o ritmo OU pedir para {parceiro} conduzir." },
+              { descricao: "Escolha: 30 segundos de carícias", desafio: "{jogador}, escolha: 30 segundos de carícias OU 30 segundos de beijos intensos." }
             ],
             parceiro_homem: [
-              "Deixe {parceiro} escolher: carícias ousadas OU beijos intensos.",
-              "Pergunte a {parceiro} se {ele_ela_parceiro} prefere toques OU beijos."
+              { descricao: "Deixe {parceiro} escolher: carícias ousadas", desafio: "Deixe {parceiro} escolher: carícias ousadas OU beijos intensos." },
+              { descricao: "Pergunte a {parceiro} se {ele_ela_parceiro}", desafio: "Pergunte a {parceiro} se {ele_ela_parceiro} prefere toques OU beijos." }
             ],
             parceiro_mulher: [
-              "Deixe {parceiro} escolher: beijos lentos OU carícias mais ousadas.",
-              "Ofereça a {parceiro} a escolha entre comandar OU deixar {jogador} comandar."
+              { descricao: "Deixe {parceiro} escolher: beijos lentos", desafio: "Deixe {parceiro} escolher: beijos lentos OU carícias mais ousadas." },
+              { descricao: "Ofereça a {parceiro} a escolha", desafio: "Ofereça a {parceiro} a escolha entre comandar OU deixar {jogador} comandar." }
             ]
           },
           repeticao: {
             generico: [
-              "Repita o último toque mais ousado.",
-              "Recrie o momento mais quente até agora."
+              { descricao: "Repita o último toque mais", desafio: "Repita o último toque mais ousado." },
+              { descricao: "Recrie o momento mais quente", desafio: "Recrie o momento mais quente até agora." }
             ],
             jogador_homem: [
-              "{jogador}, repita o último beijo intenso em {parceiro}.",
-              "{jogador}, faça novamente o último toque direto."
+              { descricao: "Repita o último beijo intenso", desafio: "{jogador}, repita o último beijo intenso em {parceiro}." },
+              { descricao: "Faça novamente o último toque", desafio: "{jogador}, faça novamente o último toque direto." }
             ],
             jogador_mulher: [
-              "{jogador}, repita a última carícia mais ousada.",
-              "{jogador}, faça de novo o último beijo intenso."
+              { descricao: "Repita a última carícia mais", desafio: "{jogador}, repita a última carícia mais ousada." },
+              { descricao: "Faça de novo o último", desafio: "{jogador}, faça de novo o último beijo intenso." }
             ],
             parceiro_homem: [
-              "Refaça o último beijo profundo em {parceiro}.",
-              "Deixe {parceiro} pedir para repetir um toque específico."
+              { descricao: "Refaça o último beijo profundo", desafio: "Refaça o último beijo profundo em {parceiro}." },
+              { descricao: "Deixe {parceiro} pedir para repetir", desafio: "Deixe {parceiro} pedir para repetir um toque específico." }
             ],
             parceiro_mulher: [
-              "Repita a última carícia mais ousada em {parceiro}.",
-              "Deixe {parceiro} escolher algo para repetir."
+              { descricao: "Repita a última carícia mais", desafio: "Repita a última carícia mais ousada em {parceiro}." },
+              { descricao: "Deixe {parceiro} escolher algo para", desafio: "Deixe {parceiro} escolher algo para repetir." }
             ]
           },
           surpresa: {
             generico: [
-              "Surpresa! 30 segundos de beijos e carícias sem parar.",
-              "Surpresa! Fiquem colados e alternem beijos e toques por 30 segundos."
+              { descricao: "Surpresa", desafio: "Surpresa! 30 segundos de beijos e carícias sem parar." },
+              { descricao: "Surpresa", desafio: "Surpresa! Fiquem colados e alternem beijos e toques por 30 segundos." }
             ],
             jogador_homem: [
-              "{jogador}, surpresa: beije {parceiro} com intensidade e conduza os toques.",
-              "{jogador}, surpresa: diga um desejo explícito e faça um toque imediato."
+              { descricao: "Surpresa: beije {parceiro} com intensidade", desafio: "{jogador}, surpresa: beije {parceiro} com intensidade e conduza os toques." },
+              { descricao: "Surpresa: diga um desejo explícito", desafio: "{jogador}, surpresa: diga um desejo explícito e faça um toque imediato." }
             ],
             jogador_mulher: [
-              "{jogador}, surpresa: faça carícias ousadas e um beijo demorado.",
-              "{jogador}, surpresa: diga o que quer e conduza os beijos."
+              { descricao: "Surpresa: faça carícias ousadas e", desafio: "{jogador}, surpresa: faça carícias ousadas e um beijo demorado." },
+              { descricao: "Surpresa: diga o que quer", desafio: "{jogador}, surpresa: diga o que quer e conduza os beijos." }
             ],
             parceiro_homem: [
-              "Surpresa: {parceiro} escolhe um desejo para você cumprir agora.",
-              "Surpresa: dê um beijo intenso e deixe {parceiro} guiar suas mãos."
+              { descricao: "Surpresa: {parceiro} escolhe um desejo", desafio: "Surpresa: {parceiro} escolhe um desejo para você cumprir agora." },
+              { descricao: "Surpresa: dê um beijo intenso", desafio: "Surpresa: dê um beijo intenso e deixe {parceiro} guiar suas mãos." }
             ],
             parceiro_mulher: [
-              "Surpresa: {parceiro} escolhe onde receber toques por 30 segundos.",
-              "Surpresa: beije {parceiro} intensamente e mantenha contato próximo."
+              { descricao: "Surpresa: {parceiro} escolhe onde receber", desafio: "Surpresa: {parceiro} escolhe onde receber toques por 30 segundos." },
+              { descricao: "Surpresa: beije {parceiro} intensamente e", desafio: "Surpresa: beije {parceiro} intensamente e mantenha contato próximo." }
             ]
           }
         }
@@ -1485,11 +1491,7 @@
     };
 
     // Efeitos possíveis para casas surpresa
-    const efeitosSurpresa = [
-      { texto: "Troque de posição com seu par!", tipo: "trocar", valor: 0 },
-      { texto: "Perde a vez! Aproveite para observar...", tipo: "perder", valor: 0 },
-      { texto: "Sorte! Jogue novamente!", tipo: "extra", valor: 0 }
-    ];
+    const efeitosSurpresa = [];
 
     // Ícones por tipo de casa
     const iconesCasa = {
@@ -1497,7 +1499,6 @@
       final: '🏆',
       acao: '💫',
       bonus: '🎁',
-      penalidade: '⚠️',
       escolha: '🔀',
       repeticao: '🔄',
       surpresa: '❓'
@@ -1576,13 +1577,17 @@
       // Elementos da página de nomes
       inputNome1: document.getElementById('nome1'),
       selectSexo1: document.getElementById('sexo1'),
-      selectEmoji1: document.getElementById('emoji1'),
+      emojiInput1: document.getElementById('emoji1'),
+      emojiGrid1: document.getElementById('emojiGrid1'),
       inputNome2: document.getElementById('nome2'),
       selectSexo2: document.getElementById('sexo2'),
-      selectEmoji2: document.getElementById('emoji2'),
+      emojiInput2: document.getElementById('emoji2'),
+      emojiGrid2: document.getElementById('emojiGrid2'),
       btnAvancar: document.getElementById('btnAvancar'),
+      btnPreencher: document.getElementById('btnPreencher'),
       btnContinuar: document.getElementById('btnContinuar'),
       btnApagar: document.getElementById('btnApagar'),
+      emojiList: ['♀', '♂', '♀️', '♂️'],
 
       // Elementos da página de nível
       nomesEscolhidos: document.getElementById('nomesEscolhidos'),
@@ -1617,8 +1622,8 @@
         const nome2 = this.inputNome2.value.trim();
         const sexo1 = this.selectSexo1.value;
         const sexo2 = this.selectSexo2.value;
-        const emoji1 = this.selectEmoji1.value;
-        const emoji2 = this.selectEmoji2.value;
+        const emoji1 = this.emojiInput1.value;
+        const emoji2 = this.emojiInput2.value;
         this.btnAvancar.disabled = !nome1 || !nome2 || !sexo1 || !sexo2 || !emoji1 || !emoji2;
       },
 
@@ -1641,6 +1646,30 @@
 
       aplicarTema(nivel) {
         document.body.className = `tema-${nivel}`;
+      },
+
+      renderEmojiGrid(container, alvoId) {
+        container.innerHTML = this.emojiList.map(emoji => (
+          `<button type="button" class="emoji-btn" data-emoji="${emoji}" data-alvo="${alvoId}" aria-label="Emoji ${emoji}">${emoji}</button>`
+        )).join('');
+        container.querySelectorAll('.emoji-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            this.selecionarEmoji(alvoId, btn.dataset.emoji);
+            this.atualizarBotaoAvancar();
+          });
+        });
+      },
+
+      selecionarEmoji(alvoId, emoji) {
+        const input = document.getElementById(alvoId);
+        if (!input) return;
+        input.value = emoji;
+        const grid = alvoId === 'emoji1' ? this.emojiGrid1 : this.emojiGrid2;
+        if (grid) {
+          grid.querySelectorAll('.emoji-btn').forEach(btn => {
+            btn.classList.toggle('selected', btn.dataset.emoji === emoji);
+          });
+        }
       },
 
       // Calcula posições no perímetro do grid 7x7 (estilo Monopoly)
@@ -1711,29 +1740,63 @@
               }
               
               // Conteúdo da casa
-              let textoPreview = casaInfo.desafio;
-              if (textoPreview.length > 50) {
-                textoPreview = textoPreview.substring(0, 47) + '...';
-              }
-              
+              const textoPreviewJ1Raw = casaInfo.desafioRawJ1 || casaInfo.desafioRaw || casaInfo.desafio || null;
+              const textoPreviewJ2Raw = casaInfo.desafioRawJ2 || casaInfo.desafioRaw || casaInfo.desafio || null;
+              const desafioJ1Obj = typeof textoPreviewJ1Raw === 'string'
+                ? { descricao: '', desafio: textoPreviewJ1Raw }
+                : (textoPreviewJ1Raw || { descricao: '', desafio: '' });
+              const desafioJ2Obj = typeof textoPreviewJ2Raw === 'string'
+                ? { descricao: '', desafio: textoPreviewJ2Raw }
+                : (textoPreviewJ2Raw || { descricao: '', desafio: '' });
+              const textoPreviewJ1 = Game.formatarTexto(
+                desafioJ1Obj.descricao || desafioJ1Obj.desafio || '',
+                state.nome1,
+                state.nome2,
+                state.sexo1,
+                state.sexo2
+              );
+              const textoPreviewJ2 = Game.formatarTexto(
+                desafioJ2Obj.descricao || desafioJ2Obj.desafio || '',
+                state.nome2,
+                state.nome1,
+                state.sexo2,
+                state.sexo1
+              );
+              const classeJ1 = state.sexo1 === 'homem' ? 'genero-homem' : 'genero-mulher';
+              const classeJ2 = state.sexo2 === 'homem' ? 'genero-homem' : 'genero-mulher';
+              const maiorLen = Math.max(textoPreviewJ1.length, textoPreviewJ2.length);
+              let tamanhoFonte = '0.65rem';
+              if (maiorLen > 150) tamanhoFonte = '0.4rem';
+              else if (maiorLen > 120) tamanhoFonte = '0.45rem';
+              else if (maiorLen > 90) tamanhoFonte = '0.5rem';
+              else if (maiorLen > 70) tamanhoFonte = '0.55rem';
+
               casa.innerHTML = `
-                <span class="casa-numero">${casaIdx}</span>
-                <span class="casa-icone">${iconesCasa[casaInfo.tipo] || '•'}</span>
-                <span class="casa-texto">${textoPreview}</span>
+                <div class="casa-inner">
+                  <div class="casa-numero-col">${casaIdx}</div>
+                  <div class="casa-conteudo" style="--casa-texto-tamanho: ${tamanhoFonte}">
+                    <div class="casa-slot slot-j1"></div>
+                    <div class="casa-desafio ${classeJ1}">${textoPreviewJ1}</div>
+                    <div class="casa-divisor"></div>
+                    <div class="casa-slot slot-j2"></div>
+                    <div class="casa-desafio ${classeJ2}">${textoPreviewJ2}</div>
+                  </div>
+                </div>
               `;
-              
-              // Adicionar peões se necessário
-              if (casaIdx === posJ1) {
-                const peao1 = document.createElement('div');
-                peao1.className = `peao j1 ${state.jogadorAtual === 1 ? 'ativo' : ''}`;
-                peao1.textContent = state.emoji1 || '🙂';
-                casa.appendChild(peao1);
+
+              const slotJ1 = casa.querySelector('.slot-j1');
+              const slotJ2 = casa.querySelector('.slot-j2');
+              if (casaIdx === posJ1 && slotJ1) {
+                const chip = document.createElement('span');
+                chip.className = 'casa-peao-slot j1';
+                chip.textContent = `${state.emoji1 || '🙂'} ${state.nome1 || 'J1'}`;
+                slotJ1.appendChild(chip);
               }
-              if (casaIdx === posJ2) {
-                const peao2 = document.createElement('div');
-                peao2.className = `peao j2 ${state.jogadorAtual === 2 ? 'ativo' : ''}`;
-                peao2.textContent = state.emoji2 || '🙂';
-                casa.appendChild(peao2);
+              if (casaIdx === posJ2 && slotJ2) {
+                const chip = document.createElement('span');
+                chip.className = 'casa-peao-slot j2';
+                chip.textContent = `${state.emoji2 || '🙂'} ${state.nome2 || 'J2'}`;
+                slotJ2.appendChild(chip);
               }
               
               this.tabuleiro.appendChild(casa);
@@ -1800,11 +1863,44 @@
         const tabuleiro = dados.tabuleiro;
         this.prepararPools();
         state.casasDesafios = tabuleiro.map((tipo) => {
-          let preview = 'Desafio ao cair aqui.';
-          if (tipo === 'inicio') preview = 'Partida!';
-          if (tipo === 'final') preview = 'Chegada!';
-          return { tipo, desafio: preview };
+          let desafioRawJ1 = { descricao: 'Desafio', desafio: 'Desafio ao cair aqui.' };
+          let desafioRawJ2 = { descricao: 'Desafio', desafio: 'Desafio ao cair aqui.' };
+          if (tipo === 'inicio') {
+            desafioRawJ1 = { descricao: 'Partida!', desafio: 'Partida!' };
+            desafioRawJ2 = { descricao: 'Partida!', desafio: 'Partida!' };
+          }
+          if (tipo === 'final') {
+            desafioRawJ1 = { descricao: 'Chegada!', desafio: 'Chegada!' };
+            desafioRawJ2 = { descricao: 'Chegada!', desafio: 'Chegada!' };
+          }
+          if (tipo !== 'inicio' && tipo !== 'final') {
+            desafioRawJ1 = this.sortearDesafioFixoParaJogador(tipo, 1);
+            desafioRawJ2 = this.sortearDesafioFixoParaJogador(tipo, 2);
+          }
+          return { tipo, desafioRawJ1, desafioRawJ2 };
         });
+      },
+
+      sortearDesafioFixoParaJogador(tipo, jogador) {
+        const sexoJogador = jogador === 1 ? state.sexo1 : state.sexo2;
+        const sexoParceiro = jogador === 1 ? state.sexo2 : state.sexo1;
+        const alvoJogador = sexoJogador === 'homem' ? 'jogador_homem' : 'jogador_mulher';
+        const alvoParceiro = sexoParceiro === 'homem' ? 'parceiro_homem' : 'parceiro_mulher';
+        let texto = null;
+
+        if (Math.random() < 0.6) {
+          const alvos = this.embaralhar([alvoJogador, alvoParceiro]);
+          for (const alvo of alvos) {
+            texto = this.pegarDoPool(tipo, alvo);
+            if (texto) break;
+          }
+        }
+
+        if (!texto) {
+          texto = this.pegarDoPool(tipo, 'generico');
+        }
+
+        return texto || { descricao: 'Aproveite o momento', desafio: 'Aproveite o momento!' };
       },
 
       prepararPools() {
@@ -1843,8 +1939,8 @@
       },
 
       sortearDesafio(tipo, jogador) {
-        if (tipo === 'inicio') return 'Partida! Boa sorte!';
-        if (tipo === 'final') return 'Vitória! Parabéns!';
+        if (tipo === 'inicio') return { descricao: 'Partida!', desafio: 'Partida! Boa sorte!' };
+        if (tipo === 'final') return { descricao: 'Vitória!', desafio: 'Vitória! Parabéns!' };
 
         const sexoJogador = jogador === 1 ? state.sexo1 : state.sexo2;
         const sexoParceiro = jogador === 1 ? state.sexo2 : state.sexo1;
@@ -1865,7 +1961,7 @@
           texto = this.pegarDoPool(tipo, 'generico');
         }
 
-        return texto || 'Aproveite o momento!';
+        return texto || { descricao: 'Aproveite o momento', desafio: 'Aproveite o momento!' };
       },
 
       formatarTexto(texto, jogadorNome, parceiroNome, sexoJogador, sexoParceiro) {
@@ -1882,6 +1978,16 @@
       iniciar() {
         if (!state.desafiosPools || Object.keys(state.desafiosPools).length === 0) {
           this.prepararPools();
+        }
+        const precisaGerar = !Array.isArray(state.casasDesafios) || state.casasDesafios.length === 0
+          || state.casasDesafios.some(casa =>
+            !casa.desafioRawJ1
+            || !casa.desafioRawJ2
+            || typeof casa.desafioRawJ1 === 'string'
+            || typeof casa.desafioRawJ2 === 'string'
+          );
+        if (precisaGerar) {
+          this.gerarDesafiosCasas();
         }
         UI.aplicarTema(state.nivel);
         UI.renderizarTabuleiro();
@@ -1902,7 +2008,7 @@
           if (jogador === 1) state.perdeVezJ1 = false;
           else state.perdeVezJ2 = false;
           
-          UI.mostrarDesafio('penalidade', `${jogador === 1 ? state.nome1 : state.nome2} perdeu a vez!`);
+          UI.mostrarDesafio('surpresa', `${jogador === 1 ? state.nome1 : state.nome2} perdeu a vez!`);
           this.proximoJogador({ limparDesafio: false });
           Storage.salvar();
           return;
@@ -1963,9 +2069,11 @@
         if (tipo === 'surpresa') {
           efeito = this.sortearEfeito();
           state.efeitoAtual = efeito;
-          this.aplicarEfeito(efeito, jogador);
+          if (efeito) {
+            this.aplicarEfeito(efeito, jogador);
+          }
 
-          if (efeito.tipo === 'mover') {
+          if (efeito && efeito.tipo === 'mover') {
             usouMover = true;
             posicao = jogador === 1 ? state.posicaoJ1 : state.posicaoJ2;
             casaInfo = state.casasDesafios[posicao];
@@ -1980,9 +2088,15 @@
           }
         }
 
-        const desafioTextoRaw = this.sortearDesafio(tipo, jogador);
+        const desafioTextoRaw = (jogador === 1 ? casaInfo.desafioRawJ1 : casaInfo.desafioRawJ2)
+          || casaInfo.desafioRaw
+          || casaInfo.desafio
+          || this.sortearDesafio(tipo, jogador);
+        const desafioObj = typeof desafioTextoRaw === 'string'
+          ? { descricao: '', desafio: desafioTextoRaw }
+          : (desafioTextoRaw || { descricao: '', desafio: '' });
         const desafioTexto = this.formatarTexto(
-          desafioTextoRaw,
+          desafioObj.desafio || desafioObj.descricao || '',
           jogadorNome,
           parceiroNome,
           sexoJogador,
@@ -2005,6 +2119,7 @@
       },
 
       sortearEfeito() {
+        if (efeitosSurpresa.length === 0) return null;
         return efeitosSurpresa[Math.floor(Math.random() * efeitosSurpresa.length)];
       },
 
@@ -2093,18 +2208,28 @@
       UI.inputNome2.addEventListener('input', () => UI.atualizarBotaoAvancar());
       UI.selectSexo1.addEventListener('change', () => UI.atualizarBotaoAvancar());
       UI.selectSexo2.addEventListener('change', () => UI.atualizarBotaoAvancar());
-      UI.selectEmoji1.addEventListener('change', () => UI.atualizarBotaoAvancar());
-      UI.selectEmoji2.addEventListener('change', () => UI.atualizarBotaoAvancar());
+      UI.renderEmojiGrid(UI.emojiGrid1, 'emoji1');
+      UI.renderEmojiGrid(UI.emojiGrid2, 'emoji2');
 
       UI.btnAvancar.addEventListener('click', () => {
         state.nome1 = UI.inputNome1.value.trim();
         state.nome2 = UI.inputNome2.value.trim();
         state.sexo1 = UI.selectSexo1.value;
         state.sexo2 = UI.selectSexo2.value;
-        state.emoji1 = UI.selectEmoji1.value;
-        state.emoji2 = UI.selectEmoji2.value;
+        state.emoji1 = UI.emojiInput1.value;
+        state.emoji2 = UI.emojiInput2.value;
         UI.atualizarNomesNivel();
         UI.mostrarPagina('paginaNivel');
+      });
+
+      UI.btnPreencher.addEventListener('click', () => {
+        UI.inputNome1.value = 'Gabriel';
+        UI.selectSexo1.value = 'homem';
+        UI.selecionarEmoji('emoji1', '♂');
+        UI.inputNome2.value = 'Dandara';
+        UI.selectSexo2.value = 'mulher';
+        UI.selecionarEmoji('emoji2', '♀');
+        UI.atualizarBotaoAvancar();
       });
 
       UI.btnContinuar.addEventListener('click', () => {
@@ -2115,8 +2240,8 @@
           UI.inputNome2.value = state.nome2;
           UI.selectSexo1.value = state.sexo1;
           UI.selectSexo2.value = state.sexo2;
-          UI.selectEmoji1.value = state.emoji1;
-          UI.selectEmoji2.value = state.emoji2;
+          UI.selecionarEmoji('emoji1', state.emoji1);
+          UI.selecionarEmoji('emoji2', state.emoji2);
           UI.aplicarTema(state.nivel);
           UI.mostrarPagina('paginaJogo');
           Game.iniciar();
