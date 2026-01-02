@@ -14,7 +14,7 @@ Jogo de tabuleiro digital para casal, feito em HTML/CSS/JS puro. Roda 100% no na
 2. Escolha o nivel (moderado, intenso, explicito).
 3. Role um dado fisico e toque no numero 1-6 correspondente.
 4. Leia o desafio no centro do tabuleiro e execute.
-5. Toque em "Proximo jogador" para alternar a vez.
+5. O jogo alterna automaticamente a vez apos o clique no dado.
 
 ## Estrutura do projeto
 - `index.html`: HTML, CSS e JS em um unico arquivo.
@@ -32,7 +32,7 @@ Fluxo principal:
 2. `Game.gerarDesafiosCasas()` prepara o preview das casas e os pools embaralhados.
 3. `Game.moverPeao()` move passo a passo e chama `processarCasa`.
 4. `Game.processarCasa()` sorteia o desafio por alvo/sexo e aplica efeito.
-5. `Game.proximoJogador()` alterna a vez e libera o dado.
+5. `Game.proximoJogador()` alterna a vez logo apos a jogada.
 
 ## Tabuleiro e casas
 - O tabuleiro e um grid 7x7.
@@ -93,6 +93,7 @@ Sugestoes comuns e onde mexer:
   - Atualizar `UI.mostrarDesafio()` se precisar de estilo dedicado.
   - Ajustar `Game.processarCasa()` se houver regra especial.
 - Ajustar salvamento: `Storage.salvar()` e `Storage.carregar()`.
+ - Fluxo da vez e status no centro: `UI.atualizarInfoJogo()` e texto do bloco do centro.
 
 ## Desenvolvimento local
 Basta abrir o `index.html` no navegador.
